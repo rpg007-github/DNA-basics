@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DNA &mdash; From Nucleotides to Proteins</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#faf8f3;--bg-card:#ffffff;--text:#2c2c2c;--text-muted:#6b6b6b;
+  --accent:#8a6d1a;--accent-light:#faf3e0;--accent-dark:#5a4710;
+  --border:#e2ddd0;--border-light:#f0ece2;
+  --green:#2d8659;--green-light:#e8f5ee;--amber:#b8860b;--amber-light:#fef9e7;
+  --red:#c0392b;--red-light:#fdecea;
+  --shadow:0 1px 3px rgba(0,0,0,0.06),0 4px 12px rgba(0,0,0,0.04);
+  --shadow-hover:0 2px 8px rgba(0,0,0,0.08),0 8px 24px rgba(0,0,0,0.06);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--text);line-height:1.7;font-size:16px;}
+.hero{background:linear-gradient(135deg,#3d2e08 0%,#8a6d1a 45%,#b89830 100%);color:#fff;padding:4rem 2rem 3.5rem;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");}
+.hero h1{font-family:'Crimson Pro',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:700;position:relative;letter-spacing:-0.02em;}
+.hero .subtitle{font-size:1.15rem;opacity:0.85;margin-top:0.5rem;position:relative;font-weight:300;}
+.hero .badge{display:inline-block;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:20px;padding:0.3rem 1rem;font-family:'JetBrains Mono',monospace;font-size:0.8rem;margin-top:1rem;position:relative;letter-spacing:0.05em;}
+.container{max-width:900px;margin:0 auto;padding:2rem 1.5rem;}
+.section-card{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:2rem 2.2rem;margin-bottom:1.8rem;box-shadow:var(--shadow);transition:box-shadow 0.3s;}
+.section-card:hover{box-shadow:var(--shadow-hover);}
+.section-card h2{font-family:'Crimson Pro',serif;font-size:1.6rem;color:var(--accent-dark);margin-bottom:1rem;display:flex;align-items:center;gap:0.6rem;}
+.sec-num{font-family:'JetBrains Mono',monospace;font-size:0.85rem;background:var(--accent);color:#fff;padding:0.2rem 0.6rem;border-radius:6px;font-weight:500;}
+.section-card h3{font-family:'Crimson Pro',serif;font-size:1.25rem;color:var(--accent);margin:1.4rem 0 0.6rem;border-bottom:1px solid var(--border-light);padding-bottom:0.3rem;}
+.section-card p{margin-bottom:0.9rem;}
+.formula-box{background:var(--accent-light);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;font-size:0.95rem;}
+.formula-box code{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--accent-dark);font-weight:500;}
+.formula-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.key-point{background:var(--green-light);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.key-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.warning-box{background:var(--amber-light);border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
+.warning-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--amber);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.example-box{background:#fdf8ee;border:1px dashed var(--accent);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;}
+.example-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.bridge-box{background:linear-gradient(135deg,#faf3e0 0%,#e8f5ee 100%);border:1px solid var(--accent);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;}
+.bridge-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent-dark);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.fact-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.92rem;}
+.fact-table th{background:var(--accent);color:#fff;padding:0.6rem 0.8rem;text-align:left;font-weight:500;font-size:0.85rem;letter-spacing:0.03em;}
+.fact-table td{padding:0.55rem 0.8rem;border-bottom:1px solid var(--border-light);}
+.fact-table tr:nth-child(even) td{background:#fdf8ee;}
+.fact-table tr:hover td{background:var(--accent-light);}
+.toc{background:var(--bg-card);border:1px solid var(--border);border-radius:12px;padding:1.5rem 2rem;margin-bottom:2rem;box-shadow:var(--shadow);}
+.toc h3{font-family:'Crimson Pro',serif;color:var(--accent-dark);margin-bottom:0.8rem;font-size:1.2rem;}
+.toc a{display:inline-block;color:var(--accent);text-decoration:none;font-size:0.95rem;padding:0.2rem 0;transition:color 0.2s;}
+.toc a:hover{color:var(--accent-dark);text-decoration:underline;}
+.toc-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.2rem 2rem;}
+@media(max-width:600px){.toc-grid{grid-template-columns:1fr;}}
+.nav-tabs{display:flex;justify-content:center;gap:0.5rem;padding:1.5rem 1rem 0;flex-wrap:wrap;}
+.nav-tab{font-family:'Source Sans 3',sans-serif;font-size:0.95rem;padding:0.6rem 1.4rem;border:1px solid var(--border);background:var(--bg-card);border-radius:8px 8px 0 0;cursor:pointer;transition:all 0.2s;color:var(--text-muted);font-weight:500;}
+.nav-tab:hover{color:var(--accent);border-color:var(--accent);}
+.nav-tab.active{color:var(--accent);border-color:var(--accent);border-bottom-color:var(--bg);background:var(--bg);font-weight:600;}
+.tab-content{display:none;}.tab-content.active{display:block;}
+.quiz-controls{display:flex;gap:1rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;}
+.quiz-controls select{font-family:'Source Sans 3',sans-serif;padding:0.5rem 1rem;border:1px solid var(--border);border-radius:8px;font-size:0.9rem;background:var(--bg-card);}
+.quiz-controls button{font-family:'Source Sans 3',sans-serif;padding:0.5rem 1.2rem;border:1px solid var(--accent);border-radius:8px;background:var(--accent-light);color:var(--accent-dark);cursor:pointer;font-weight:500;font-size:0.9rem;transition:all 0.2s;}
+.quiz-controls button:hover{background:var(--accent);color:#fff;}
+.q-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);}
+.q-diff{font-family:'JetBrains Mono',monospace;font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:10px;font-weight:500;display:inline-block;margin-bottom:0.5rem;}
+.q-diff.easy{background:#e8f5ee;color:#2d8659;}
+.q-diff.medium{background:#fef9e7;color:#b8860b;}
+.q-diff.hard{background:#fdecea;color:#c0392b;}
+.q-text{font-size:1rem;font-weight:500;margin-bottom:1rem;}
+.q-opts label{display:block;padding:0.5rem 0.8rem;margin:0.3rem 0;border:1px solid var(--border-light);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;}
+.q-opts label:hover{background:var(--accent-light);border-color:var(--accent);}
+.q-opts input{margin-right:0.5rem;}
+.q-feedback{margin-top:0.8rem;padding:0.8rem 1rem;border-radius:8px;font-size:0.9rem;display:none;}
+.q-feedback.correct{background:var(--green-light);border:1px solid var(--green);color:#1a5632;}
+.q-feedback.wrong{background:var(--red-light);border:1px solid var(--red);color:#8b1a1a;}
+.q-submit{font-family:'Source Sans 3',sans-serif;padding:0.45rem 1.2rem;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;font-weight:500;font-size:0.9rem;margin-top:0.5rem;transition:all 0.2s;}
+.q-submit:hover{background:var(--accent-dark);}
+.q-submit:disabled{opacity:0.5;cursor:default;}
+.score-bar{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;box-shadow:var(--shadow);}
+.score-fill-wrap{flex:1;height:12px;background:var(--border-light);border-radius:6px;overflow:hidden;}
+.score-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));border-radius:6px;transition:width 0.5s ease;width:0%;}
+.score-text{font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--accent-dark);white-space:nowrap;min-width:80px;text-align:right;}
+.fc-filters{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+.fc-filter{font-family:'Source Sans 3',sans-serif;padding:0.4rem 1rem;border:1px solid var(--border);border-radius:20px;background:var(--bg-card);cursor:pointer;font-size:0.85rem;transition:all 0.2s;}
+.fc-filter:hover,.fc-filter.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+.fc-counter{font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem;}
+.fc-area{perspective:1000px;width:100%;max-width:600px;margin:0 auto 1.5rem;min-height:260px;}
+.fc-inner{position:relative;width:100%;min-height:260px;transition:transform 0.6s;transform-style:preserve-3d;cursor:pointer;}
+.fc-inner.flipped{transform:rotateY(180deg);}
+.fc-face{position:absolute;top:0;left:0;right:0;min-height:260px;backface-visibility:hidden;border-radius:12px;padding:2rem;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow);}
+.fc-front{background:var(--bg-card);}
+.fc-front .fc-cat{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem;background:var(--accent-light);padding:0.2rem 0.6rem;border-radius:10px;}
+.fc-front .fc-q{font-family:'Crimson Pro',serif;font-size:1.3rem;color:var(--text);line-height:1.5;}
+.fc-back{background:linear-gradient(135deg,#faf3e0,#faf8f3);transform:rotateY(180deg);}
+.fc-back .fc-a{font-size:1.05rem;color:var(--text);line-height:1.6;}
+.fc-hint{font-size:0.8rem;color:var(--text-muted);margin-top:0.8rem;font-style:italic;}
+.fc-nav{display:flex;justify-content:center;gap:1rem;align-items:center;}
+.fc-nav button{font-family:'Source Sans 3',sans-serif;padding:0.5rem 1.5rem;border:1px solid var(--accent);border-radius:8px;background:var(--accent-light);color:var(--accent-dark);cursor:pointer;font-weight:500;transition:all 0.2s;}
+.fc-nav button:hover{background:var(--accent);color:#fff;}
+.sa-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:var(--shadow);}
+.sa-q{font-size:1rem;font-weight:500;margin-bottom:0.8rem;}
+.sa-textarea{width:100%;min-height:100px;padding:0.8rem;border:1px solid var(--border);border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:0.95rem;resize:vertical;line-height:1.6;}
+.sa-textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(138,109,26,0.1);}
+.sa-submit{font-family:'Source Sans 3',sans-serif;padding:0.45rem 1.2rem;border:1px solid var(--accent);border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;font-weight:500;font-size:0.9rem;margin-top:0.5rem;transition:all 0.2s;}
+.sa-submit:hover{background:var(--accent-dark);}
+.sa-result{margin-top:1rem;display:none;}
+.sa-score-bar{height:10px;background:var(--border-light);border-radius:5px;overflow:hidden;margin:0.5rem 0;}
+.sa-score-fill{height:100%;border-radius:5px;transition:width 0.5s;}
+.sa-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.5rem 0;}
+.sa-tag{font-family:'JetBrains Mono',monospace;font-size:0.72rem;padding:0.15rem 0.5rem;border-radius:10px;}
+.sa-tag.hit{background:var(--green-light);color:var(--green);}
+.sa-tag.miss{background:#eee;color:#999;}
+.sa-model{margin-top:0.8rem;}
+.sa-model summary{cursor:pointer;color:var(--accent);font-weight:500;font-size:0.9rem;}
+.sa-model .model-text{margin-top:0.5rem;padding:0.8rem;background:var(--accent-light);border-radius:8px;font-size:0.9rem;line-height:1.6;}
+.sa-pct{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:500;}
+@media(max-width:600px){.section-card{padding:1.2rem 1rem;}.container{padding:1.5rem 1rem;}.hero{padding:3rem 1.5rem 2.5rem;}}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>DNA: From Nucleotides to Proteins</h1>
+  <p class="subtitle">Structure, Replication, Transcription, Translation &amp; Mutations</p>
+  <div class="badge">FOCUSED TOPIC MODULE</div>
+</div>
+
+<nav class="nav-tabs">
+  <button class="nav-tab active" data-tab="study" onclick="switchTab('study')">Study Guide</button>
+  <button class="nav-tab" data-tab="quiz" onclick="switchTab('quiz')">Quiz</button>
+  <button class="nav-tab" data-tab="flashcards" onclick="switchTab('flashcards')">Flashcards</button>
+  <button class="nav-tab" data-tab="sa" onclick="switchTab('sa')">Short Answer</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STUDY GUIDE
+     ═══════════════════════════════════════════════════════════ -->
+<div class="tab-content active" id="tab-study">
+<div class="container">
+
+<div class="toc">
+  <h3>Table of Contents</h3>
+  <div class="toc-grid">
+    <a href="#s1">01 &mdash; What Is a Nucleotide?</a>
+    <a href="#s2">02 &mdash; Purines &amp; Pyrimidines</a>
+    <a href="#s3">03 &mdash; Base Pairing &amp; Chargaff's Rules</a>
+    <a href="#s4">04 &mdash; The Double Helix</a>
+    <a href="#s5">05 &mdash; DNA vs. RNA</a>
+    <a href="#s6">06 &mdash; DNA Replication</a>
+    <a href="#s7">07 &mdash; The Central Dogma</a>
+    <a href="#s8">08 &mdash; Transcription</a>
+    <a href="#s9">09 &mdash; mRNA Processing</a>
+    <a href="#s10">10 &mdash; The Genetic Code</a>
+    <a href="#s11">11 &mdash; Translation</a>
+    <a href="#s12">12 &mdash; Mutations</a>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<div class="section-card" id="s1">
+  <h2><span class="sec-num">01</span>What Is a Nucleotide?</h2>
+  <p>DNA and RNA are both built from small repeating units called <strong>nucleotides</strong>. A nucleotide is a molecule made of three parts snapped together: a sugar, a phosphate group, and a nitrogenous base. To understand DNA, you need to understand each piece.</p>
+
+  <h3>The Sugar</h3>
+  <p>The sugar in a nucleotide is a five-carbon sugar (a pentose). The five carbons are numbered 1&prime; through 5&prime; (read as "one prime" through "five prime"). The prime marks are just a naming convention used to distinguish the sugar carbons from the carbons in the base. In DNA, the sugar is <strong>deoxyribose</strong>. In RNA, the sugar is <strong>ribose</strong>. The only structural difference between them is at the 2&prime; carbon: deoxyribose has just a hydrogen there (it is "de-oxy," meaning it is missing one oxygen), while ribose has a hydroxyl group (-OH). This seemingly tiny difference makes DNA more chemically stable than RNA, which is one reason DNA is used for long-term information storage.</p>
+
+  <h3>The Phosphate Group</h3>
+  <p>A phosphate group is a phosphorus atom bonded to four oxygen atoms (PO<sub>4</sub><sup>3&minus;</sup>). It carries a negative charge at biological pH. The phosphate attaches to the 5&prime; carbon of the sugar. When nucleotides link together into a chain, the phosphate of one nucleotide bonds to the 3&prime; carbon of the next nucleotide's sugar, creating a <strong>phosphodiester bond</strong>. This bond is a covalent bond (strong, within the backbone), not a hydrogen bond. The repeating sugar-phosphate-sugar-phosphate chain forms the <strong>backbone</strong> of the DNA strand.</p>
+
+  <h3>The Nitrogenous Base</h3>
+  <p>The base is a ring-shaped molecule containing nitrogen. It attaches to the 1&prime; carbon of the sugar. The base is the part that varies from nucleotide to nucleotide and carries the genetic information. There are four bases in DNA: adenine (A), guanine (G), cytosine (C), and thymine (T). The sequence of these bases along the strand is what encodes genetic instructions.</p>
+
+  <div class="key-point">
+    <div class="key-label">Key Point</div>
+    Every nucleotide has the same sugar and phosphate. The only thing that differs is the base. So the "genetic alphabet" is really just four letters: A, G, C, and T. When we write a DNA sequence like ATCGGA, we are listing the bases in order along one strand of the backbone.
+  </div>
+
+  <div class="formula-box">
+    <div class="formula-label">Nucleotide = 3 Parts</div>
+    <code>Pentose sugar (deoxyribose in DNA, ribose in RNA) + Phosphate group (on 5&prime; carbon) + Nitrogenous base (on 1&prime; carbon)</code>
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-label">Common Mistake</div>
+    Students often confuse "nucleotide" with "nucleoside." A nucleoside is just the sugar plus the base (no phosphate). A nucleotide is the sugar plus the base plus at least one phosphate group. If there is no phosphate, it is a nucleoside, not a nucleotide. ATP (adenosine triphosphate), for example, is a nucleotide: it has ribose, adenine, and three phosphates.
+  </div>
+</div>
+
+<!-- SECTION 2 -->
+<div class="section-card" id="s2">
+  <h2><span class="sec-num">02</span>Purines &amp; Pyrimidines</h2>
+  <p>The four DNA bases fall into two structural categories based on the size of their ring structure. This distinction matters because it directly determines how base pairing works.</p>
+
+  <p><strong>Purines</strong> have a double-ring structure (a six-membered ring fused to a five-membered ring). The two purines in DNA are <strong>adenine (A)</strong> and <strong>guanine (G)</strong>. They are the larger bases.</p>
+
+  <p><strong>Pyrimidines</strong> have a single-ring structure (one six-membered ring). The pyrimidines in DNA are <strong>cytosine (C)</strong> and <strong>thymine (T)</strong>. In RNA, thymine is replaced by <strong>uracil (U)</strong>, which is also a pyrimidine. Pyrimidines are the smaller bases.</p>
+
+  <table class="fact-table">
+    <tr><th>Category</th><th>Ring Structure</th><th>DNA Bases</th><th>RNA Bases</th><th>Size</th></tr>
+    <tr><td>Purine</td><td>Double ring (2 fused rings)</td><td>A, G</td><td>A, G</td><td>Larger</td></tr>
+    <tr><td>Pyrimidine</td><td>Single ring</td><td>C, T</td><td>C, U</td><td>Smaller</td></tr>
+  </table>
+
+  <div class="example-box">
+    <div class="example-label">Memory Tricks</div>
+    <p>"<strong>Pure As Gold</strong>" = Purines are Adenine and Guanine.</p>
+    <p>"<strong>CUT the Py</strong>" = Pyrimidines are Cytosine, Uracil, Thymine.</p>
+    <p>Or remember: p<strong>Y</strong>rimidine has a Y, and so does C<strong>y</strong>tosine and Th<strong>y</strong>mine.</p>
+  </div>
+
+  <div class="key-point">
+    <div class="key-label">Why This Matters</div>
+    Base pairing always joins one purine to one pyrimidine: one big ring pairs with one small ring. This keeps the width of the DNA double helix constant from one rung to the next. If two purines paired, the rung would be too wide. If two pyrimidines paired, it would be too narrow. The consistent purine-pyrimidine pairing gives DNA its uniform diameter of 2 nanometers.
+  </div>
+</div>
+
+<!-- SECTION 3 -->
+<div class="section-card" id="s3">
+  <h2><span class="sec-num">03</span>Base Pairing &amp; Chargaff's Rules</h2>
+  <p>The two strands of DNA are held together by <strong>hydrogen bonds</strong> between the bases. But the pairing is not random. Each base can only pair with one specific partner. This is called <strong>complementary base pairing</strong>.</p>
+
+  <div class="formula-box">
+    <div class="formula-label">Base Pairing Rules</div>
+    <code>A pairs with T &mdash; held by 2 hydrogen bonds</code><br>
+    <code>G pairs with C &mdash; held by 3 hydrogen bonds</code>
+  </div>
+
+  <h3>Why These Specific Pairs?</h3>
+  <p>Two reasons work together. First, size: a purine must pair with a pyrimidine (one large + one small) to maintain the constant width of the helix. This eliminates A-G and C-T pairings. Second, hydrogen bonding geometry: the positions of the hydrogen bond donors and acceptors on each base are arranged so that A fits perfectly with T (two hydrogen bonds line up), and G fits perfectly with C (three hydrogen bonds line up). The wrong pairs (A-C or G-T) cannot form the right number of hydrogen bonds at the right angles, so they are energetically unfavorable. The specificity comes from both the size constraint and the chemical complementarity of the hydrogen bonding groups.</p>
+
+  <div class="bridge-box">
+    <div class="bridge-label">Cross-Disciplinary Bridge</div>
+    The hydrogen bonds here are the same type of intermolecular force you studied in the water module. A &delta;+ hydrogen on an N-H or O-H group is attracted to a lone pair on a nearby nitrogen or oxygen. In water, this force holds water molecules together. In DNA, the same force holds the two strands together. The difference is specificity: in DNA, the donors and acceptors are precisely positioned by the ring structures of the bases, enforcing the A-T and G-C rules. The chemistry is identical.
+  </div>
+
+  <h3>Chargaff's Rules</h3>
+  <p>In the late 1940s, before the structure of DNA was known, Erwin Chargaff analyzed DNA from many organisms and noticed a pattern: the amount of adenine always equaled the amount of thymine, and the amount of guanine always equaled the amount of cytosine. This is written as %A = %T and %G = %C. These are <strong>Chargaff's rules</strong>, and they follow directly from complementary base pairing. If every A on one strand pairs with a T on the other, there must be equal numbers of each.</p>
+
+  <div class="example-box">
+    <div class="example-label">Worked Example</div>
+    <p>A sample of double-stranded DNA is analyzed and found to contain 22% adenine. What are the percentages of the other three bases?</p>
+    <p>If %A = 22%, then %T = 22% (Chargaff's rule). That accounts for 44%. The remaining 56% is split equally between G and C: %G = 28%, %C = 28%.</p>
+  </div>
+
+  <div class="key-point">
+    <div class="key-label">Key Point</div>
+    G-C base pairs have 3 hydrogen bonds; A-T pairs have 2. DNA with a higher G-C content has more hydrogen bonds per base pair, which means it takes more energy (higher temperature) to separate the two strands. This is why G-C rich DNA has a higher <strong>melting temperature (T<sub>m</sub>)</strong>. This concept shows up in molecular biology lab techniques like PCR primer design.
+  </div>
+</div>
+
+<!-- SECTION 4 -->
+<div class="section-card" id="s4">
+  <h2><span class="sec-num">04</span>The Double Helix</h2>
+  <p>In 1953, James Watson and Francis Crick (using X-ray crystallography data from Rosalind Franklin and Maurice Wilkins) proposed the double helix model of DNA. Two polynucleotide strands wind around each other in a spiral. The sugar-phosphate backbones are on the outside, like the railings of a spiral staircase. The bases face inward, forming the "steps" of the staircase, held together by hydrogen bonds.</p>
+
+  <h3>Antiparallel Orientation</h3>
+  <p>The two strands run in opposite directions. Remember that each sugar has a 5&prime; carbon and a 3&prime; carbon. Along a strand, the backbone runs from the 5&prime; end to the 3&prime; end. In the double helix, one strand runs 5&prime;&rarr;3&prime; while its partner runs 3&prime;&rarr;5&prime;. They are <strong>antiparallel</strong>. This is not decorative; it is functionally essential. The enzymes that copy DNA (DNA polymerases) can only work in one direction: they add nucleotides to the 3&prime; end. The antiparallel arrangement means the two strands must be copied by different strategies during replication.</p>
+
+  <div class="warning-box">
+    <div class="warning-label">Why 5&prime; and 3&prime; Matter</div>
+    The 5&prime; and 3&prime; labels come from the carbon atoms on the sugar. The 5&prime; carbon is where the phosphate group is attached. The 3&prime; carbon is where the next nucleotide connects (via a phosphodiester bond). When we say DNA is synthesized "5&prime; to 3&prime;," we mean new nucleotides are always added to the free 3&prime; end of the growing strand, never to the 5&prime; end. Every enzyme involved in building nucleic acids follows this rule.
+  </div>
+
+  <table class="fact-table">
+    <tr><th>Feature</th><th>Detail</th></tr>
+    <tr><td>Shape</td><td>Right-handed double helix (B-form DNA)</td></tr>
+    <tr><td>Width</td><td>2 nm (constant because of purine-pyrimidine pairing)</td></tr>
+    <tr><td>One full turn</td><td>10 base pairs, 3.4 nm</td></tr>
+    <tr><td>Rise per base pair</td><td>0.34 nm</td></tr>
+    <tr><td>Backbone bonds</td><td>Covalent (phosphodiester bonds, strong)</td></tr>
+    <tr><td>Base pair bonds</td><td>Hydrogen bonds (weak individually, many collectively)</td></tr>
+    <tr><td>Strand orientation</td><td>Antiparallel (5&prime;&rarr;3&prime; and 3&prime;&rarr;5&prime;)</td></tr>
+  </table>
+</div>
+
+<!-- SECTION 5 -->
+<div class="section-card" id="s5">
+  <h2><span class="sec-num">05</span>DNA vs. RNA</h2>
+  <p>DNA and RNA are both nucleic acids built from nucleotides, but they differ in several important ways. Understanding these differences helps explain why DNA stores information while RNA carries it out.</p>
+
+  <table class="fact-table">
+    <tr><th>Feature</th><th>DNA</th><th>RNA</th></tr>
+    <tr><td>Full name</td><td>Deoxyribonucleic acid</td><td>Ribonucleic acid</td></tr>
+    <tr><td>Sugar</td><td>Deoxyribose (no -OH at 2&prime;)</td><td>Ribose (has -OH at 2&prime;)</td></tr>
+    <tr><td>Bases</td><td>A, T, G, C</td><td>A, U, G, C</td></tr>
+    <tr><td>Strands</td><td>Double-stranded (usually)</td><td>Single-stranded (usually)</td></tr>
+    <tr><td>Stability</td><td>Very stable (long-term storage)</td><td>Less stable (temporary use)</td></tr>
+    <tr><td>Location (eukaryotes)</td><td>Nucleus (mainly)</td><td>Nucleus and cytoplasm</td></tr>
+    <tr><td>Function</td><td>Stores genetic information</td><td>Carries out instructions (mRNA, tRNA, rRNA)</td></tr>
+  </table>
+
+  <div class="example-box">
+    <div class="example-label">Why Uracil Instead of Thymine in RNA?</div>
+    <p>Uracil and thymine are very similar structurally. Thymine is essentially uracil with an extra methyl group (-CH<sub>3</sub>). DNA uses thymine because the methyl group makes it easier for DNA repair enzymes to distinguish thymine from cytosine that has been accidentally deaminated (damaged) into uracil. If DNA used uracil normally, the repair machinery could not tell the difference between a normal base and a damaged one. RNA does not need this repair system because it is short-lived and disposable.</p>
+  </div>
+</div>
+
+<!-- SECTION 6 -->
+<div class="section-card" id="s6">
+  <h2><span class="sec-num">06</span>DNA Replication</h2>
+  <p>Before a cell divides, it must copy all of its DNA so that each daughter cell receives a complete set. This copying process is <strong>DNA replication</strong>.</p>
+
+  <h3>Semiconservative</h3>
+  <p>Replication is <strong>semiconservative</strong>, meaning each new DNA molecule contains one original ("parent") strand and one newly synthesized ("daughter") strand. This was proven by the Meselson-Stahl experiment in 1958 using heavy nitrogen isotopes to label the original DNA and track it through rounds of replication.</p>
+
+  <h3>The Replication Fork</h3>
+  <p>Replication begins at specific sites called <strong>origins of replication</strong> and proceeds in both directions (bidirectional). The point where the two strands are being separated and new DNA is being built is called the <strong>replication fork</strong>.</p>
+
+  <h3>Why There Is a Leading and a Lagging Strand</h3>
+  <p>DNA polymerase can only add nucleotides in the 5&prime;&rarr;3&prime; direction, and the two template strands are antiparallel. This creates an asymmetry. One template strand (the 3&prime;&rarr;5&prime; template) can be read continuously as the fork opens, producing the <strong>leading strand</strong> in one smooth run. The other template strand (the 5&prime;&rarr;3&prime; template) runs the "wrong way," so DNA polymerase must work in short segments moving away from the fork, then jump back as more template is exposed. These short segments are called <strong>Okazaki fragments</strong>, and the strand built from them is the <strong>lagging strand</strong>.</p>
+
+  <h3>Key Enzymes</h3>
+  <table class="fact-table">
+    <tr><th>Enzyme</th><th>What It Does</th><th>Why It Is Needed</th></tr>
+    <tr><td><strong>Helicase</strong></td><td>Unwinds and separates the two strands</td><td>Strands must be separated to serve as templates</td></tr>
+    <tr><td><strong>Topoisomerase</strong></td><td>Relieves tension ahead of the fork</td><td>Unwinding creates torsional stress that would stall the fork</td></tr>
+    <tr><td><strong>Primase</strong></td><td>Lays down a short RNA primer</td><td>DNA polymerase cannot start from scratch; it needs a free 3&prime; -OH to add to</td></tr>
+    <tr><td><strong>DNA Polymerase III</strong></td><td>Main enzyme: adds nucleotides 5&prime;&rarr;3&prime;, proofreads</td><td>Builds the new strand using the template</td></tr>
+    <tr><td><strong>DNA Polymerase I</strong></td><td>Removes RNA primers, fills gaps with DNA</td><td>Primers are RNA and must be replaced with DNA</td></tr>
+    <tr><td><strong>Ligase</strong></td><td>Seals the nicks between Okazaki fragments</td><td>Creates a continuous backbone on the lagging strand</td></tr>
+    <tr><td><strong>Telomerase</strong></td><td>Extends telomeres (chromosome tips)</td><td>Prevents chromosome shortening with each replication cycle</td></tr>
+  </table>
+
+  <div class="warning-box">
+    <div class="warning-label">Common Mistake</div>
+    Students often say "DNA polymerase reads the template 5&prime; to 3&prime;." This is backward. DNA polymerase reads the template 3&prime;&rarr;5&prime; and builds the new strand 5&prime;&rarr;3&prime;. The direction you say depends on which strand you are talking about: the template being read or the new strand being built. The new strand is always synthesized 5&prime;&rarr;3&prime;.
+  </div>
+</div>
+
+<!-- SECTION 7 -->
+<div class="section-card" id="s7">
+  <h2><span class="sec-num">07</span>The Central Dogma</h2>
+  <p>The <strong>central dogma of molecular biology</strong> describes the flow of genetic information in a cell:</p>
+
+  <div class="formula-box">
+    <div class="formula-label">Central Dogma</div>
+    <code>DNA &rarr; (transcription) &rarr; RNA &rarr; (translation) &rarr; Protein</code>
+  </div>
+
+  <p>DNA is the master blueprint stored in the nucleus. It is never directly read by the protein-building machinery. Instead, a working copy is made in the form of <strong>messenger RNA (mRNA)</strong> through a process called <strong>transcription</strong>. The mRNA then travels out of the nucleus to <strong>ribosomes</strong> in the cytoplasm, where it is read and used to assemble a chain of amino acids into a <strong>protein</strong> through a process called <strong>translation</strong>.</p>
+
+  <p>Think of it like a construction project. DNA is the master blueprint locked in the architect's office (the nucleus). You do not take the master blueprint to the construction site. Instead, you make a photocopy (mRNA) and send that to the builders (ribosomes), who use it to construct the building (protein).</p>
+
+  <div class="key-point">
+    <div class="key-label">Key Point</div>
+    Information flows in one direction: DNA &rarr; RNA &rarr; Protein. Proteins are never reverse-translated back into RNA, and RNA is not normally reverse-transcribed back into DNA (with the notable exception of retroviruses like HIV, which use the enzyme reverse transcriptase to copy RNA into DNA).
+  </div>
+</div>
+
+<!-- SECTION 8 -->
+<div class="section-card" id="s8">
+  <h2><span class="sec-num">08</span>Transcription</h2>
+  <p>Transcription is the process of copying a gene's DNA sequence into an mRNA molecule. The enzyme that does this is <strong>RNA polymerase</strong>.</p>
+
+  <h3>Template Strand vs. Coding Strand</h3>
+  <p>Only one of the two DNA strands is read during transcription of any given gene. The strand that RNA polymerase actually reads is called the <strong>template strand</strong> (also called the antisense strand). RNA polymerase reads it in the 3&prime;&rarr;5&prime; direction and builds the mRNA in the 5&prime;&rarr;3&prime; direction, using complementary base pairing (except that RNA uses U instead of T). The other strand, which is not read but has the same sequence as the mRNA (with T instead of U), is called the <strong>coding strand</strong> (or sense strand).</p>
+
+  <h3>Three Stages</h3>
+  <p><strong>Initiation:</strong> RNA polymerase binds to a specific DNA sequence called the <strong>promoter</strong>, which is located just upstream (before) the gene. In eukaryotes, transcription factors (helper proteins) must bind the promoter first before RNA polymerase can attach. The promoter tells RNA polymerase where to start and which strand to read.</p>
+
+  <p><strong>Elongation:</strong> RNA polymerase moves along the template strand, unwinding the DNA and building the mRNA one nucleotide at a time, always in the 5&prime;&rarr;3&prime; direction. Behind the polymerase, the DNA double helix re-forms.</p>
+
+  <p><strong>Termination:</strong> RNA polymerase reaches a <strong>terminator sequence</strong> in the DNA, which signals the end of the gene. The mRNA is released, and the polymerase detaches.</p>
+
+  <div class="warning-box">
+    <div class="warning-label">Common Mistake</div>
+    RNA polymerase does not need a primer. This is different from DNA polymerase, which always requires an RNA primer to start. RNA polymerase can initiate a new strand from scratch. This is a common exam question.
+  </div>
+</div>
+
+<!-- SECTION 9 -->
+<div class="section-card" id="s9">
+  <h2><span class="sec-num">09</span>mRNA Processing (Eukaryotes Only)</h2>
+  <p>In eukaryotes, the mRNA that comes directly off the DNA template is called <strong>pre-mRNA</strong>. It must be processed before it leaves the nucleus. Three modifications occur:</p>
+
+  <p><strong>5&prime; cap:</strong> A modified guanine nucleotide is added to the 5&prime; end of the mRNA. This cap protects the mRNA from degradation and helps ribosomes recognize and attach to it.</p>
+
+  <p><strong>3&prime; poly-A tail:</strong> A string of 100 to 200 adenine nucleotides is added to the 3&prime; end. This protects the mRNA from enzymes that would chew it up from the end, and it helps export the mRNA from the nucleus.</p>
+
+  <p><strong>Splicing:</strong> The pre-mRNA contains both <strong>exons</strong> (sequences that will be expressed, meaning they code for protein) and <strong>introns</strong> (intervening sequences that do not code for protein). A complex called the <strong>spliceosome</strong> cuts out the introns and joins the exons together to form the mature mRNA.</p>
+
+  <div class="example-box">
+    <div class="example-label">Memory Trick</div>
+    <p>"<strong>Ex</strong>ons are <strong>Ex</strong>pressed." "<strong>In</strong>trons are <strong>In</strong> the trash."</p>
+  </div>
+
+  <div class="key-point">
+    <div class="key-label">Key Point</div>
+    <strong>Alternative splicing</strong> allows one gene to produce multiple different proteins by including different combinations of exons in the mature mRNA. This is how roughly 20,000 human genes can produce over 100,000 different proteins. It dramatically increases protein diversity without increasing the number of genes.
+  </div>
+
+  <div class="warning-box">
+    <div class="warning-label">Prokaryotes Are Different</div>
+    Prokaryotes do not have introns (generally), do not add a 5&prime; cap or poly-A tail, and do not process their mRNA. In fact, in prokaryotes, transcription and translation happen simultaneously because there is no nuclear membrane separating the DNA from the ribosomes. The ribosome can start translating the mRNA while it is still being transcribed.
+  </div>
+</div>
+
+<!-- SECTION 10 -->
+<div class="section-card" id="s10">
+  <h2><span class="sec-num">10</span>The Genetic Code</h2>
+  <p>The mRNA is read in groups of three consecutive nucleotides. Each group of three is called a <strong>codon</strong>. Each codon specifies one amino acid (or a stop signal). Since there are 4 possible nucleotides at each position, and 3 positions per codon, there are 4 &times; 4 &times; 4 = <strong>64 possible codons</strong>. These 64 codons specify only <strong>20 amino acids</strong> plus 3 stop signals, so most amino acids are encoded by more than one codon. This redundancy is called <strong>degeneracy</strong> (it does not mean the code is defective; it means there are multiple codons for the same amino acid, usually differing at the third position).</p>
+
+  <div class="formula-box">
+    <div class="formula-label">Key Codons</div>
+    <code>Start codon: AUG (codes for methionine, sets the reading frame)</code><br>
+    <code>Stop codons: UAA, UAG, UGA (do not code for any amino acid)</code>
+  </div>
+
+  <h3>Properties of the Genetic Code</h3>
+  <table class="fact-table">
+    <tr><th>Property</th><th>What It Means</th></tr>
+    <tr><td>Universal</td><td>Nearly all organisms use the same code (minor exceptions in mitochondria and some microbes)</td></tr>
+    <tr><td>Degenerate (redundant)</td><td>Most amino acids have more than one codon</td></tr>
+    <tr><td>Unambiguous</td><td>Each codon specifies exactly one amino acid (no confusion)</td></tr>
+    <tr><td>Non-overlapping</td><td>Codons are read sequentially without sharing nucleotides</td></tr>
+    <tr><td>No punctuation</td><td>Codons are read consecutively with no gaps or commas</td></tr>
+  </table>
+
+  <div class="example-box">
+    <div class="example-label">Memory Trick for Stop Codons</div>
+    <p>"<strong>U A</strong>re <strong>A</strong>nnoying, <strong>U A</strong>re <strong>G</strong>one, <strong>U G</strong>o <strong>A</strong>way" for UAA, UAG, UGA.</p>
+  </div>
+</div>
+
+<!-- SECTION 11 -->
+<div class="section-card" id="s11">
+  <h2><span class="sec-num">11</span>Translation</h2>
+  <p>Translation is the process of reading the mRNA codons and assembling a chain of amino acids (a polypeptide) that will fold into a protein. It occurs at <strong>ribosomes</strong>, which are molecular machines made of ribosomal RNA (rRNA) and proteins.</p>
+
+  <h3>The Players</h3>
+  <p><strong>mRNA:</strong> Carries the codon sequence from the gene. Read 5&prime;&rarr;3&prime;.</p>
+  <p><strong>tRNA (transfer RNA):</strong> Small RNA molecules that serve as adapters. One end carries an <strong>anticodon</strong> (a three-nucleotide sequence complementary to the mRNA codon). The other end carries the corresponding amino acid. The enzyme that attaches the correct amino acid to its tRNA is called <strong>aminoacyl-tRNA synthetase</strong>. There is a different synthetase for each of the 20 amino acids, and each one is highly specific.</p>
+  <p><strong>Ribosome:</strong> Has three binding sites for tRNA: the <strong>A site</strong> (aminoacyl, where incoming tRNA arrives), <strong>P site</strong> (peptidyl, where the growing chain is held), and <strong>E site</strong> (exit, where spent tRNA leaves).</p>
+
+  <h3>Three Stages</h3>
+  <p><strong>Initiation:</strong> The small ribosomal subunit binds to the mRNA and scans for the start codon (AUG). The initiator tRNA (carrying methionine) binds to AUG. The large ribosomal subunit then joins, forming the complete ribosome.</p>
+  <p><strong>Elongation:</strong> The ribosome moves along the mRNA one codon at a time. At each codon, a tRNA with the matching anticodon enters the A site, a peptide bond forms between the amino acid in the A site and the growing chain in the P site, and the ribosome shifts one codon forward (translocation). The spent tRNA exits through the E site.</p>
+  <p><strong>Termination:</strong> When the ribosome reaches a stop codon (UAA, UAG, or UGA), no tRNA recognizes it. Instead, a <strong>release factor</strong> protein enters the A site, causing the ribosome to release the completed polypeptide chain and disassemble.</p>
+
+  <div class="bridge-box">
+    <div class="bridge-label">Cross-Disciplinary Bridge</div>
+    The peptide bonds formed during translation are the same covalent bonds you encounter in biochemistry and organic chemistry. Each peptide bond is formed by a dehydration synthesis reaction (a water molecule is released when two amino acids are linked). Hydrolysis (adding water) breaks peptide bonds during protein digestion. The same reactions from the water module appear here in a completely different context.
+  </div>
+</div>
+
+<!-- SECTION 12 -->
+<div class="section-card" id="s12">
+  <h2><span class="sec-num">12</span>Mutations</h2>
+  <p>A <strong>mutation</strong> is any change in the nucleotide sequence of DNA. Mutations can occur during replication (copying errors), from exposure to mutagens (UV light, chemicals, radiation), or spontaneously. Whether a mutation has an effect depends on what it changes and where.</p>
+
+  <h3>Point Mutations (Single Nucleotide Changes)</h3>
+  <table class="fact-table">
+    <tr><th>Type</th><th>What Happens</th><th>Effect</th></tr>
+    <tr><td><strong>Silent</strong></td><td>Codon changes but still codes for the same amino acid</td><td>No effect on protein (possible because of code degeneracy)</td></tr>
+    <tr><td><strong>Missense</strong></td><td>Codon changes to code for a different amino acid</td><td>May or may not affect protein function (depends on the amino acid change and its location)</td></tr>
+    <tr><td><strong>Nonsense</strong></td><td>Codon changes to a stop codon</td><td>Premature termination; usually produces a nonfunctional, truncated protein</td></tr>
+  </table>
+
+  <h3>Frameshift Mutations</h3>
+  <p><strong>Insertions</strong> (extra nucleotides added) and <strong>deletions</strong> (nucleotides removed) shift the reading frame of every codon downstream. Because codons are read in a fixed frame of three with no gaps, adding or removing one or two nucleotides changes every codon after the mutation. Frameshifts are usually devastating because the entire amino acid sequence downstream is wrong.</p>
+
+  <div class="example-box">
+    <div class="example-label">Reading Frame Analogy</div>
+    <p>Original sentence (read in groups of 3): <code>THE CAT ATE THE RAT</code></p>
+    <p>Delete the first E (frameshift): <code>THC ATA TET HER AT_</code></p>
+    <p>Every "word" after the deletion is garbled. That is what a frameshift does to codons.</p>
+  </div>
+
+  <div class="key-point">
+    <div class="key-label">Key Point</div>
+    Insertions or deletions of exactly 3 nucleotides (or multiples of 3) add or remove whole codons without shifting the reading frame. These are less damaging than frameshifts because the rest of the protein sequence remains correct, though the inserted or deleted amino acid(s) may still affect function.
+  </div>
+
+  <div class="bridge-box">
+    <div class="bridge-label">Cross-Disciplinary Bridge</div>
+    Mutations connect molecular biology to genetics (inheritance of genetic diseases), evolution (mutations are the raw material for natural selection), medicine (cancer results from accumulated mutations in growth-control genes), and pharmacology (some drugs target mutant proteins specifically). Sickle cell disease, for example, results from a single missense mutation: one nucleotide change converts a glutamic acid to a valine in the hemoglobin protein, altering its shape and function.
+  </div>
+</div>
+
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     QUIZ
+     ═══════════════════════════════════════════════════════════ -->
+<div class="tab-content" id="tab-quiz">
+<div class="container">
+<div class="quiz-controls">
+  <select id="diff-filter" onchange="filterQuiz()"><option value="all">All Difficulties</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
+  <select id="cat-filter" onchange="filterQuiz()"><option value="all">All Topics</option></select>
+  <button onclick="resetQuiz()">Reset Quiz</button>
+</div>
+<div class="score-bar"><div class="score-fill-wrap"><div class="score-fill" id="score-fill"></div></div><div class="score-text" id="score-text">0 / 0</div></div>
+<div id="quiz-area"></div>
+</div>
+</div>
+
+<!-- FLASHCARDS -->
+<div class="tab-content" id="tab-flashcards">
+<div class="container">
+<div class="fc-filters" id="fc-filters"></div>
+<div class="fc-counter" id="fc-counter"></div>
+<div class="fc-area" onclick="flipCard()">
+  <div class="fc-inner" id="fc-inner">
+    <div class="fc-face fc-front"><div class="fc-cat" id="fc-cat"></div><div class="fc-q" id="fc-q"></div><div class="fc-hint">Click to flip</div></div>
+    <div class="fc-face fc-back"><div class="fc-a" id="fc-a"></div></div>
+  </div>
+</div>
+<div class="fc-nav"><button onclick="prevCard()">&larr; Previous</button><button onclick="nextCard()">Next &rarr;</button></div>
+</div>
+</div>
+
+<!-- SHORT ANSWER -->
+<div class="tab-content" id="tab-sa">
+<div class="container"><div id="sa-area"></div></div>
+</div>
+
+<script>
+function switchTab(id){document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelector(`[data-tab="${id}"]`).classList.add('active');document.getElementById('tab-'+id).classList.add('active');}
+
+const quizData=[
+// EASY (30)
+{q:"A nucleotide is made of three parts:",opts:["Amino acid, sugar, phosphate","Sugar, phosphate, nitrogenous base","Fatty acid, glycerol, phosphate","Sugar, protein, base"],ans:1,exp:"Every nucleotide = pentose sugar + phosphate group + nitrogenous base.",diff:"easy",cat:"Nucleotide"},
+{q:"The sugar in DNA is:",opts:["Ribose","Glucose","Deoxyribose","Fructose"],ans:2,exp:"DNA contains deoxyribose (missing the -OH at the 2' carbon). RNA contains ribose.",diff:"easy",cat:"Nucleotide"},
+{q:"The four bases in DNA are:",opts:["A, U, G, C","A, T, G, C","A, T, G, U","A, C, U, T"],ans:1,exp:"DNA uses adenine (A), thymine (T), guanine (G), and cytosine (C). RNA replaces T with uracil (U).",diff:"easy",cat:"Nucleotide"},
+{q:"Purines have a ___ ring structure.",opts:["Single","Double","Triple","No"],ans:1,exp:"Purines (A, G) have a double ring (two fused rings). Pyrimidines (C, T, U) have a single ring.",diff:"easy",cat:"Bases"},
+{q:"Which bases are purines?",opts:["C and T","A and G","A and T","G and C"],ans:1,exp:"'Pure As Gold' = Purines are Adenine and Guanine.",diff:"easy",cat:"Bases"},
+{q:"Which bases are pyrimidines?",opts:["A and G","C, T, and U","A and T","G and U"],ans:1,exp:"'CUT the Py' = Pyrimidines are Cytosine, Uracil, Thymine.",diff:"easy",cat:"Bases"},
+{q:"In DNA, adenine pairs with:",opts:["Guanine","Cytosine","Thymine","Uracil"],ans:2,exp:"A pairs with T (2 hydrogen bonds). G pairs with C (3 hydrogen bonds).",diff:"easy",cat:"Base Pairing"},
+{q:"G-C base pairs are held together by how many hydrogen bonds?",opts:["1","2","3","4"],ans:2,exp:"G-C = 3 hydrogen bonds. A-T = 2 hydrogen bonds.",diff:"easy",cat:"Base Pairing"},
+{q:"The two strands of DNA are held together by:",opts:["Covalent bonds","Ionic bonds","Hydrogen bonds between bases","Peptide bonds"],ans:2,exp:"Hydrogen bonds between complementary base pairs hold the two strands together.",diff:"easy",cat:"Double Helix"},
+{q:"The backbone of DNA is made of:",opts:["Bases and proteins","Alternating sugar and phosphate groups","Amino acids","Hydrogen bonds"],ans:1,exp:"The sugar-phosphate backbone (connected by phosphodiester bonds) runs along the outside of the helix.",diff:"easy",cat:"Double Helix"},
+{q:"The two DNA strands are said to be:",opts:["Parallel","Antiparallel","Identical","Perpendicular"],ans:1,exp:"One strand runs 5'→3', the other runs 3'→5'. They are antiparallel.",diff:"easy",cat:"Double Helix"},
+{q:"DNA replication is described as semiconservative because:",opts:["Half of the DNA is destroyed","Each new molecule has one old strand and one new strand","Only half the bases are copied","The process is 50% accurate"],ans:1,exp:"Semiconservative: each daughter molecule keeps one parent strand and builds one new strand.",diff:"easy",cat:"Replication"},
+{q:"DNA polymerase builds new DNA in which direction?",opts:["3' to 5'","5' to 3'","Both directions","Random"],ans:1,exp:"DNA polymerase always synthesizes the new strand 5'→3'.",diff:"easy",cat:"Replication"},
+{q:"Which enzyme unwinds the DNA double helix during replication?",opts:["DNA polymerase","Ligase","Helicase","Primase"],ans:2,exp:"Helicase separates the two strands by breaking hydrogen bonds between base pairs.",diff:"easy",cat:"Replication"},
+{q:"The Central Dogma states that information flows:",opts:["Protein → RNA → DNA","RNA → DNA → Protein","DNA → RNA → Protein","DNA → Protein → RNA"],ans:2,exp:"DNA → (transcription) → RNA → (translation) → Protein.",diff:"easy",cat:"Central Dogma"},
+{q:"Transcription produces:",opts:["DNA","Protein","mRNA","tRNA only"],ans:2,exp:"Transcription copies a gene from DNA into messenger RNA (mRNA).",diff:"easy",cat:"Transcription"},
+{q:"The enzyme that performs transcription is:",opts:["DNA polymerase","RNA polymerase","Helicase","Ligase"],ans:1,exp:"RNA polymerase reads the DNA template and builds the mRNA strand.",diff:"easy",cat:"Transcription"},
+{q:"Translation occurs at the:",opts:["Nucleus","Ribosome","Mitochondria","Golgi apparatus"],ans:1,exp:"Ribosomes are the molecular machines where mRNA is read and proteins are assembled.",diff:"easy",cat:"Translation"},
+{q:"A codon is a group of ___ nucleotides on mRNA.",opts:["1","2","3","4"],ans:2,exp:"Each codon = 3 consecutive nucleotides that specify one amino acid.",diff:"easy",cat:"Genetic Code"},
+{q:"The start codon is:",opts:["UAA","UGA","AUG","UAG"],ans:2,exp:"AUG codes for methionine and signals the start of translation.",diff:"easy",cat:"Genetic Code"},
+{q:"How many stop codons are there?",opts:["1","2","3","4"],ans:2,exp:"Three stop codons: UAA, UAG, UGA. They do not code for amino acids.",diff:"easy",cat:"Genetic Code"},
+{q:"How many possible codons exist?",opts:["20","32","64","128"],ans:2,exp:"4 bases × 4 × 4 = 64 possible three-letter codons.",diff:"easy",cat:"Genetic Code"},
+{q:"tRNA carries ___ to the ribosome during translation.",opts:["Codons","mRNA","Amino acids","DNA"],ans:2,exp:"tRNA is the adapter molecule that carries amino acids and matches them to mRNA codons via its anticodon.",diff:"easy",cat:"Translation"},
+{q:"Which type of RNA makes up part of the ribosome?",opts:["mRNA","tRNA","rRNA","snRNA"],ans:2,exp:"Ribosomal RNA (rRNA) is a structural and catalytic component of ribosomes.",diff:"easy",cat:"Translation"},
+{q:"Introns are:",opts:["Expressed sequences","Non-coding sequences removed during mRNA processing","Parts of the ribosome","Found only in prokaryotes"],ans:1,exp:"Introns are intervening, non-coding sequences spliced out of pre-mRNA. 'Introns are In the trash.'",diff:"easy",cat:"Processing"},
+{q:"Exons are:",opts:["Non-coding junk","Expressed sequences that code for protein","Found only in prokaryotes","Parts of tRNA"],ans:1,exp:"Exons are the sequences that remain in the mature mRNA and are expressed as protein. 'Exons are Expressed.'",diff:"easy",cat:"Processing"},
+{q:"A mutation that changes a codon to a stop codon is called:",opts:["Silent","Missense","Nonsense","Frameshift"],ans:2,exp:"A nonsense mutation creates a premature stop codon, truncating the protein.",diff:"easy",cat:"Mutations"},
+{q:"Insertions and deletions cause ___ mutations.",opts:["Silent","Missense","Nonsense","Frameshift"],ans:3,exp:"Adding or removing nucleotides (not in multiples of 3) shifts the reading frame of all downstream codons.",diff:"easy",cat:"Mutations"},
+{q:"The bond that links nucleotides in the DNA backbone is called a:",opts:["Hydrogen bond","Peptide bond","Phosphodiester bond","Glycosidic bond"],ans:2,exp:"Phosphodiester bonds are covalent bonds between the sugar of one nucleotide and the phosphate of the next.",diff:"easy",cat:"Nucleotide"},
+{q:"In RNA, thymine is replaced by:",opts:["Adenine","Guanine","Cytosine","Uracil"],ans:3,exp:"RNA uses uracil (U) instead of thymine (T). Both pair with adenine.",diff:"easy",cat:"DNA vs RNA"},
+
+// MEDIUM (15)
+{q:"A DNA sample is 30% adenine. What percentage is cytosine?",opts:["20%","30%","40%","70%"],ans:0,exp:"%A=%T=30%, so A+T=60%. Remaining 40% is split: %G=%C=20% each.",diff:"medium",cat:"Base Pairing"},
+{q:"Why does DNA with higher G-C content have a higher melting temperature?",opts:["G and C are larger bases","G-C pairs have 3 hydrogen bonds vs. 2 for A-T","G-C pairs are covalently bonded","Cytosine is more electronegative"],ans:1,exp:"More hydrogen bonds per base pair means more energy is needed to separate the strands.",diff:"medium",cat:"Base Pairing"},
+{q:"The lagging strand is synthesized as Okazaki fragments because:",opts:["DNA polymerase makes errors on that strand","DNA polymerase can only work 5'→3', and the template runs the wrong direction","There is not enough primase","Helicase works too slowly"],ans:1,exp:"The lagging strand template runs 5'→3', so polymerase must work in short segments away from the fork.",diff:"medium",cat:"Replication"},
+{q:"What is the role of primase in DNA replication?",opts:["Unwinds DNA","Joins Okazaki fragments","Lays down a short RNA primer that provides a 3'-OH for DNA polymerase","Proofreads the new strand"],ans:2,exp:"DNA polymerase cannot start from scratch. It needs a free 3'-OH group. Primase provides this by making a short RNA primer.",diff:"medium",cat:"Replication"},
+{q:"If an mRNA codon is 5'-AUG-3', what is the tRNA anticodon?",opts:["5'-UAC-3'","3'-UAC-5'","5'-TAC-3'","3'-AUG-5'"],ans:0,exp:"The anticodon is complementary and antiparallel to the codon. AUG pairs with UAC (reading 5'→3').",diff:"medium",cat:"Translation"},
+{q:"Alternative splicing allows:",opts:["One gene to produce multiple different proteins","DNA to replicate faster","tRNA to carry multiple amino acids","Mutations to be repaired"],ans:0,exp:"By including different combinations of exons, one gene can produce multiple mRNA variants and therefore different proteins.",diff:"medium",cat:"Processing"},
+{q:"Which of these does RNA polymerase NOT need that DNA polymerase does?",opts:["A template","Nucleotides","A primer","Energy"],ans:2,exp:"RNA polymerase can initiate transcription without a primer. DNA polymerase always needs a primer.",diff:"medium",cat:"Transcription"},
+{q:"The template strand of DNA reads 3'-TACGGCAAT-5'. What is the mRNA?",opts:["5'-AUGCCGUUA-3'","5'-TACGGCAAT-3'","5'-UACGGCAAU-3'","3'-AUGCCGUUA-5'"],ans:0,exp:"mRNA is complementary to the template (A→U, T→A, G→C, C→G), built 5'→3': AUGCCGUUA.",diff:"medium",cat:"Transcription"},
+{q:"The genetic code is called 'degenerate' because:",opts:["It contains errors","Most amino acids are coded by more than one codon","It only works in eukaryotes","Stop codons are unnecessary"],ans:1,exp:"64 codons code for only 20 amino acids + stops. Most amino acids have multiple codons (redundancy = degeneracy).",diff:"medium",cat:"Genetic Code"},
+{q:"A missense mutation:",opts:["Has no effect on the protein","Changes a codon to a stop codon","Changes a codon so it codes for a different amino acid","Shifts the reading frame"],ans:2,exp:"Missense = a different amino acid is inserted. Effect depends on the location and nature of the amino acid change.",diff:"medium",cat:"Mutations"},
+{q:"Sickle cell disease results from what type of mutation?",opts:["Silent","Missense","Nonsense","Frameshift"],ans:1,exp:"A single nucleotide change causes glutamic acid to be replaced by valine in hemoglobin. This is a missense mutation.",diff:"medium",cat:"Mutations"},
+{q:"In eukaryotes, transcription occurs in the ___ and translation occurs in the ___.",opts:["Cytoplasm; nucleus","Nucleus; cytoplasm","Ribosome; nucleus","Mitochondria; cytoplasm"],ans:1,exp:"Transcription happens in the nucleus (where DNA is). Mature mRNA is exported to ribosomes in the cytoplasm for translation.",diff:"medium",cat:"Central Dogma"},
+{q:"Telomerase is important because:",opts:["It unwinds DNA","It prevents chromosome shortening during replication","It repairs mismatched bases","It transcribes telomere genes"],ans:1,exp:"Without telomerase, chromosomes shorten with each replication cycle. Telomerase extends the telomere sequences at chromosome ends.",diff:"medium",cat:"Replication"},
+{q:"Prokaryotic transcription and translation are coupled, meaning:",opts:["They use the same enzyme","They occur at the same time and place","They only happen during cell division","They share the same start signal"],ans:1,exp:"With no nuclear membrane, ribosomes can begin translating mRNA while RNA polymerase is still transcribing it.",diff:"medium",cat:"Central Dogma"},
+{q:"A deletion of 2 nucleotides in a coding sequence would cause:",opts:["A silent mutation","A missense mutation","A frameshift mutation","No mutation"],ans:2,exp:"Deleting 2 nucleotides shifts the reading frame (not a multiple of 3), changing every codon downstream.",diff:"medium",cat:"Mutations"},
+
+// HARD (8)
+{q:"The Meselson-Stahl experiment used ¹⁵N-labeled DNA to demonstrate that replication is semiconservative. After two rounds of replication in ¹⁴N medium, what fraction of DNA molecules would be entirely light (¹⁴N/¹⁴N)?",opts:["0","1/4","1/2","3/4"],ans:2,exp:"After round 1: all hybrid (¹⁵N/¹⁴N). After round 2: half hybrid, half light. So 1/2 are entirely ¹⁴N/¹⁴N.",diff:"hard",cat:"Replication"},
+{q:"A researcher finds that a particular organism's DNA is 18% guanine. If this is double-stranded DNA, what is %A?",opts:["18%","32%","36%","64%"],ans:1,exp:"%G=%C=18%, so G+C=36%. Remaining 64% is A+T. Since %A=%T, each is 32%.",diff:"hard",cat:"Base Pairing"},
+{q:"Why can a single base substitution in the third position of a codon often be a silent mutation?",opts:["The third position is not transcribed","The genetic code is degenerate; most variation at the third 'wobble' position still codes for the same amino acid","Stop codons only occur at position 1","RNA polymerase skips the third position"],ans:1,exp:"Due to degeneracy, codons for the same amino acid usually differ only at the third position (the 'wobble' position). A change there often has no effect on the protein.",diff:"hard",cat:"Mutations"},
+{q:"If a gene's template strand reads 3'-TACAAAGGGACT-5', and a mutation changes the 7th nucleotide (G) to A, what happens to the protein?",opts:["No change (silent mutation)","A different amino acid is inserted (missense)","A premature stop codon is created (nonsense)","The reading frame shifts"],ans:2,exp:"Original mRNA: AUGUUUCCCUGA. Codons: AUG-UUU-CCC-UGA (Met-Phe-Pro-Stop). Changing position 7 (G→A in template = C→U in mRNA): AUG-UUU-CUC-UGA still → check: template 3'-TACAAAGAGACT-5' → mRNA 5'-AUGUUUCUCUGA-3' → AUG UUU CUC UGA = Met-Phe-Leu-Stop. Actually this changes CCC to CUC (Pro to Leu), which is missense. But the question asks about position 7 in the template: 3'-TACAAAA GGACT-5' with G→A gives 3'-TACAAAAG AACT-5'... Let me recalculate. Template: T-A-C-A-A-A-G-G-G-A-C-T (positions 1-12). Position 7 = G→A. New template: 3'-TACAAAAGGACT-5'. Wait, that changes nothing in the codon. Let me recount. mRNA from original: A-U-G-U-U-U-C-C-C-U-G-A. Position 7 in mRNA = C. If template G→A at position 7, mRNA position 7: C→U. New mRNA: AUGUUUUCCUGA → AUG-UUU-UCC-UGA = Met-Phe-Ser-Stop. This is missense (Pro→Ser).",ans:1,exp:"The mutation changes one codon, replacing one amino acid with another (missense). The reading frame is not altered because it is a substitution, not an insertion or deletion.",diff:"hard",cat:"Mutations"},
+{q:"A polyribosome (polysome) is:",opts:["A ribosome with extra subunits","Multiple ribosomes translating the same mRNA simultaneously","A ribosome translating multiple mRNAs","A cluster of ribosomes in the nucleus"],ans:1,exp:"Multiple ribosomes can attach to a single mRNA and translate it simultaneously, increasing protein output from one mRNA molecule.",diff:"hard",cat:"Translation"},
+{q:"The 5' cap on eukaryotic mRNA is a modified guanine. Its functions include all of the following EXCEPT:",opts:["Protection from exonucleases","Ribosome recognition and binding","Splicing of introns","Nuclear export"],ans:2,exp:"Splicing is carried out by the spliceosome and is independent of the 5' cap. The cap protects mRNA, aids ribosome binding, and facilitates nuclear export.",diff:"hard",cat:"Processing"},
+{q:"Reverse transcriptase, found in retroviruses, violates the central dogma by:",opts:["Translating protein back to RNA","Copying RNA into DNA","Replicating DNA without a template","Transcribing protein into mRNA"],ans:1,exp:"Reverse transcriptase copies RNA→DNA, which is the reverse of the normal DNA→RNA direction. The central dogma's one-way flow (DNA→RNA→Protein) has this notable exception.",diff:"hard",cat:"Central Dogma"},
+{q:"If a deletion removes exactly 3 nucleotides from a coding region (not at a splice site), the most likely result is:",opts:["A frameshift and completely garbled protein","Loss of one amino acid, rest of protein unaffected","No effect whatsoever","The mRNA will not be translated"],ans:1,exp:"A 3-nucleotide deletion removes one codon (one amino acid) without shifting the reading frame. Downstream codons read normally. The protein loses one amino acid, which may or may not affect function.",diff:"hard",cat:"Mutations"}
+];
+
+const fcData=[
+{f:"Three parts of a nucleotide?",b:"Pentose sugar + phosphate group + nitrogenous base",cat:"Nucleotide"},
+{f:"DNA sugar vs. RNA sugar?",b:"DNA: deoxyribose (no -OH at 2'). RNA: ribose (has -OH at 2'). 'Deoxy' = missing one oxygen.",cat:"Nucleotide"},
+{f:"What bond links nucleotides in the backbone?",b:"Phosphodiester bond (covalent, between 3' of one sugar and 5' phosphate of next).",cat:"Nucleotide"},
+{f:"Nucleotide vs. nucleoside?",b:"Nucleotide = sugar + base + phosphate. Nucleoside = sugar + base only (no phosphate).",cat:"Nucleotide"},
+{f:"Which bases are purines?",b:"A and G (double ring). 'Pure As Gold.'",cat:"Bases"},
+{f:"Which bases are pyrimidines?",b:"C, T, U (single ring). 'CUT the Py.'",cat:"Bases"},
+{f:"Why does a purine always pair with a pyrimidine?",b:"To maintain constant helix width (2 nm). Two purines = too wide. Two pyrimidines = too narrow.",cat:"Bases"},
+{f:"Base pairing rules in DNA?",b:"A-T (2 H-bonds), G-C (3 H-bonds).",cat:"Base Pairing"},
+{f:"Chargaff's rules?",b:"%A = %T and %G = %C in any double-stranded DNA.",cat:"Base Pairing"},
+{f:"If DNA is 22% A, what are the other percentages?",b:"%T = 22%, %G = 28%, %C = 28%. (A+T = 44%, remaining 56% split equally.)",cat:"Base Pairing"},
+{f:"Why does high G-C content raise melting temperature?",b:"G-C pairs have 3 H-bonds vs. 2 for A-T. More bonds = more energy to separate strands.",cat:"Base Pairing"},
+{f:"What holds the two DNA strands together?",b:"Hydrogen bonds between complementary bases (weak individually, strong collectively).",cat:"Double Helix"},
+{f:"What are the backbone bonds?",b:"Phosphodiester bonds (covalent, strong). These hold nucleotides together within each strand.",cat:"Double Helix"},
+{f:"What does antiparallel mean?",b:"One strand runs 5'→3', the other runs 3'→5'. They point in opposite directions.",cat:"Double Helix"},
+{f:"Width of the DNA double helix?",b:"2 nm.",cat:"Double Helix"},
+{f:"Base pairs per full turn?",b:"10 bp per turn, 3.4 nm per turn.",cat:"Double Helix"},
+{f:"5' and 3' refer to what?",b:"Carbon atoms on the sugar. 5' has the phosphate; 3' has the free -OH where the next nucleotide attaches.",cat:"Double Helix"},
+{f:"What does semiconservative mean?",b:"Each daughter DNA molecule has one original parent strand and one newly synthesized strand.",cat:"Replication"},
+{f:"Who proved semiconservative replication?",b:"Meselson and Stahl (1958), using heavy nitrogen (¹⁵N) labeling.",cat:"Replication"},
+{f:"Helicase does what?",b:"Unwinds and separates the two DNA strands at the replication fork.",cat:"Replication"},
+{f:"Why is primase needed?",b:"DNA polymerase cannot start from scratch. Primase lays down a short RNA primer with a free 3'-OH.",cat:"Replication"},
+{f:"DNA Polymerase III does what?",b:"Main replication enzyme. Adds nucleotides 5'→3' and proofreads.",cat:"Replication"},
+{f:"DNA Polymerase I does what?",b:"Removes RNA primers and replaces them with DNA.",cat:"Replication"},
+{f:"Ligase does what?",b:"Seals nicks between Okazaki fragments on the lagging strand.",cat:"Replication"},
+{f:"Leading strand vs. lagging strand?",b:"Leading: built continuously toward fork. Lagging: built in Okazaki fragments away from fork (because polymerase only works 5'→3').",cat:"Replication"},
+{f:"Telomerase does what?",b:"Extends telomeres (chromosome tips) to prevent shortening during replication.",cat:"Replication"},
+{f:"Central Dogma?",b:"DNA → (transcription) → RNA → (translation) → Protein.",cat:"Central Dogma"},
+{f:"Where does transcription occur (eukaryotes)?",b:"In the nucleus.",cat:"Transcription"},
+{f:"Where does translation occur?",b:"At ribosomes in the cytoplasm.",cat:"Translation"},
+{f:"RNA polymerase reads which strand?",b:"The template (antisense) strand, 3'→5'. Builds mRNA 5'→3'.",cat:"Transcription"},
+{f:"Does RNA polymerase need a primer?",b:"No. Unlike DNA polymerase, RNA polymerase can start from scratch.",cat:"Transcription"},
+{f:"What is a promoter?",b:"DNA sequence where RNA polymerase binds to begin transcription. Located upstream of the gene.",cat:"Transcription"},
+{f:"Three mRNA processing steps (eukaryotes)?",b:"1) 5' cap (modified guanine), 2) 3' poly-A tail (~200 A's), 3) Splicing (introns removed, exons joined).",cat:"Processing"},
+{f:"Exons vs. introns?",b:"Exons are Expressed (kept in mRNA). Introns are In the trash (spliced out).",cat:"Processing"},
+{f:"What is alternative splicing?",b:"Different combinations of exons included in mature mRNA, so one gene → multiple protein variants.",cat:"Processing"},
+{f:"How many codons total?",b:"64 (4³ = 64).",cat:"Genetic Code"},
+{f:"Start codon?",b:"AUG (methionine). Sets the reading frame.",cat:"Genetic Code"},
+{f:"Stop codons?",b:"UAA, UAG, UGA. 'U Are Annoying, U Are Gone, U Go Away.'",cat:"Genetic Code"},
+{f:"What does 'degenerate' mean for the genetic code?",b:"Multiple codons code for the same amino acid (redundancy). Not defective.",cat:"Genetic Code"},
+{f:"What is a codon?",b:"Three consecutive mRNA nucleotides that specify one amino acid.",cat:"Genetic Code"},
+{f:"What is an anticodon?",b:"Three nucleotides on tRNA, complementary to the mRNA codon.",cat:"Translation"},
+{f:"What does aminoacyl-tRNA synthetase do?",b:"Attaches the correct amino acid to its matching tRNA. One for each of the 20 amino acids.",cat:"Translation"},
+{f:"Ribosome sites: A, P, E?",b:"A = aminoacyl (incoming tRNA), P = peptidyl (growing chain), E = exit (spent tRNA leaves).",cat:"Translation"},
+{f:"Three stages of translation?",b:"Initiation (start codon + ribosome assembly), Elongation (codon reading + peptide bond formation), Termination (stop codon + release factor).",cat:"Translation"},
+{f:"What recognizes stop codons?",b:"Release factors (proteins), not tRNA.",cat:"Translation"},
+{f:"Silent mutation?",b:"Nucleotide changes but codon still codes for the same amino acid (due to degeneracy).",cat:"Mutations"},
+{f:"Missense mutation?",b:"Nucleotide change causes a different amino acid to be inserted.",cat:"Mutations"},
+{f:"Nonsense mutation?",b:"Nucleotide change creates a premature stop codon. Protein is truncated.",cat:"Mutations"},
+{f:"Frameshift mutation?",b:"Insertion or deletion (not multiple of 3) shifts the reading frame of all downstream codons.",cat:"Mutations"},
+{f:"Why is a 3-nucleotide deletion less harmful than a 1-nucleotide deletion?",b:"A 3-nt deletion removes one amino acid without shifting the reading frame. A 1-nt deletion frameshifts everything downstream.",cat:"Mutations"},
+{f:"Sickle cell disease mutation type?",b:"Missense. One nucleotide change → glutamic acid replaced by valine in hemoglobin.",cat:"Mutations"},
+{f:"What is reverse transcriptase?",b:"Enzyme in retroviruses that copies RNA → DNA. Exception to the central dogma's normal flow.",cat:"Central Dogma"},
+{f:"DNA vs RNA: bases?",b:"DNA: A, T, G, C. RNA: A, U, G, C. Thymine (DNA) replaced by uracil (RNA).",cat:"DNA vs RNA"},
+{f:"DNA vs RNA: strands?",b:"DNA: usually double-stranded. RNA: usually single-stranded.",cat:"DNA vs RNA"},
+{f:"Why is DNA more stable than RNA?",b:"Deoxyribose lacks the 2'-OH that makes ribose reactive. Also, double-stranded structure provides redundancy for repair.",cat:"DNA vs RNA"}
+];
+
+const saData=[
+{q:"Describe the three components of a nucleotide. Explain what each part does and how nucleotides connect to form a DNA strand.",
+concepts:[
+{term:"Sugar (deoxyribose in DNA)",syns:["sugar","deoxyribose","pentose","five-carbon","5-carbon","ribose"],weight:2},
+{term:"Phosphate group",syns:["phosphate","PO4","negative charge"],weight:2},
+{term:"Nitrogenous base (A, T, G, C)",syns:["nitrogenous base","base","adenine","thymine","guanine","cytosine"],weight:2},
+{term:"Phosphodiester bond links nucleotides",syns:["phosphodiester","backbone","covalent","3'.*5'","sugar.*phosphate"],weight:3},
+{term:"Base carries genetic information / varies",syns:["genetic information","varies","sequence","code","differs"],weight:2}
+],
+model:"A nucleotide has three parts. The sugar is deoxyribose in DNA (a five-carbon sugar with carbons numbered 1' through 5'). The phosphate group attaches to the 5' carbon and carries a negative charge. The nitrogenous base attaches to the 1' carbon and is the part that varies (A, T, G, or C), carrying the genetic information. Nucleotides are linked together by phosphodiester bonds: the phosphate group of one nucleotide forms a covalent bond with the 3' carbon of the next nucleotide's sugar, creating a repeating sugar-phosphate backbone. The sequence of bases along this backbone encodes genetic instructions."
+},
+{q:"Explain Chargaff's rules and how they relate to the structure of the DNA double helix. Include a worked example.",
+concepts:[
+{term:"%A = %T and %G = %C",syns:["%a.*%t","%g.*%c","adenine.*thymine","guanine.*cytosine","equal"],weight:3},
+{term:"Complementary base pairing",syns:["complementary","pair","A-T","G-C","base pair"],weight:3},
+{term:"Hydrogen bonds hold pairs together",syns:["hydrogen bond","H-bond","2 hydrogen","3 hydrogen"],weight:2},
+{term:"Purine pairs with pyrimidine",syns:["purine","pyrimidine","big.*small","double ring.*single ring"],weight:2},
+{term:"Numerical example",syns:["%","percent","22","28","30","20","remaining"],weight:2}
+],
+model:"Chargaff's rules state that in any double-stranded DNA, the percentage of adenine equals thymine (%A = %T) and the percentage of guanine equals cytosine (%G = %C). This follows directly from complementary base pairing: every A on one strand pairs with a T on the other (held by 2 hydrogen bonds), and every G pairs with a C (held by 3 hydrogen bonds). A purine always pairs with a pyrimidine, maintaining the constant width of the helix. For example, if a DNA sample is 30% adenine, then %T = 30% also. A + T = 60%, leaving 40% for G + C, split equally: %G = 20%, %C = 20%."
+},
+{q:"Compare and contrast the leading strand and lagging strand during DNA replication. Why are they replicated differently?",
+concepts:[
+{term:"DNA polymerase works only 5'→3'",syns:["5'.*3'","5 prime.*3 prime","one direction","only direction"],weight:3},
+{term:"Antiparallel strands",syns:["antiparallel","opposite direction","run opposite"],weight:2},
+{term:"Leading strand: continuous synthesis",syns:["leading","continuous","smooth","one piece"],weight:2},
+{term:"Lagging strand: Okazaki fragments",syns:["lagging","okazaki","fragment","discontinuous","short piece"],weight:3},
+{term:"Ligase joins fragments",syns:["ligase","join","seal","connect","glue"],weight:2}
+],
+model:"The two strands are replicated differently because DNA polymerase can only synthesize in the 5'→3' direction, and the two template strands are antiparallel. The leading strand's template runs 3'→5', so polymerase can follow the replication fork continuously, building one long strand without interruption. The lagging strand's template runs 5'→3' (the 'wrong' direction relative to fork movement), so polymerase must work in short segments called Okazaki fragments, synthesizing away from the fork. Each fragment requires its own RNA primer. After synthesis, DNA Polymerase I removes the primers and fills the gaps, and ligase seals the nicks between fragments to create a continuous strand."
+},
+{q:"Trace the flow of information from a gene in DNA to a functional protein. Include transcription, mRNA processing, and translation.",
+concepts:[
+{term:"Transcription: DNA → mRNA by RNA polymerase",syns:["transcription","rna polymerase","dna to.*rna","dna.*mrna"],weight:2},
+{term:"mRNA processing: cap, tail, splicing",syns:["cap","poly-a","splicing","intron","exon","process"],weight:2},
+{term:"mRNA travels to ribosome/cytoplasm",syns:["ribosome","cytoplasm","leave.*nucleus","export"],weight:2},
+{term:"Translation: mRNA → protein at ribosome",syns:["translation","codon","amino acid","protein","trna","anticodon"],weight:3},
+{term:"Codons read in triplets, start AUG, stop codons",syns:["AUG","start","stop","triplet","reading frame","UAA","UAG","UGA"],weight:2}
+],
+model:"In the nucleus, RNA polymerase reads the template strand of the gene and builds a complementary mRNA molecule (transcription). In eukaryotes, the pre-mRNA is processed: a 5' cap and 3' poly-A tail are added for protection, and introns are spliced out, leaving only exons in the mature mRNA. The processed mRNA exits the nucleus and reaches a ribosome in the cytoplasm. During translation, the ribosome reads the mRNA in three-nucleotide codons starting at AUG (methionine). Transfer RNA molecules deliver amino acids matching each codon via their anticodons. Peptide bonds link the amino acids into a growing polypeptide chain. When a stop codon (UAA, UAG, or UGA) is reached, a release factor terminates translation and the completed polypeptide is released to fold into a functional protein."
+},
+{q:"Explain the three types of point mutations (silent, missense, nonsense) and why frameshift mutations are usually more damaging than any of them.",
+concepts:[
+{term:"Silent: same amino acid (degeneracy)",syns:["silent","same amino acid","no change","degenera","redundan"],weight:2},
+{term:"Missense: different amino acid",syns:["missense","different amino acid","substitute","change.*amino"],weight:2},
+{term:"Nonsense: premature stop codon",syns:["nonsense","stop codon","premature","truncat"],weight:2},
+{term:"Frameshift: insertion/deletion shifts reading frame",syns:["frameshift","insertion","deletion","reading frame","shift"],weight:3},
+{term:"Frameshift affects ALL downstream codons",syns:["all downstream","every codon","entire","everything after","garble"],weight:3}
+],
+model:"Point mutations change a single nucleotide. A silent mutation changes a codon but still codes for the same amino acid, thanks to the degeneracy of the genetic code (no effect on the protein). A missense mutation changes a codon so it codes for a different amino acid, which may or may not affect protein function depending on the nature and location of the change. A nonsense mutation changes a codon into a premature stop codon, truncating the protein, which is usually nonfunctional. Frameshift mutations (insertions or deletions not in multiples of 3) are more damaging because they shift the reading frame of every codon downstream of the mutation. Since codons are read consecutively with no gaps, even a single nucleotide insertion or deletion garbles the entire amino acid sequence after that point, almost always producing a nonfunctional protein."
+},
+{q:"Explain why RNA polymerase does not need a primer but DNA polymerase does. Why does this matter for replication?",
+concepts:[
+{term:"DNA polymerase needs a free 3'-OH to add nucleotides",syns:["3'.*OH","3 prime","free end","cannot start","add to existing"],weight:3},
+{term:"RNA polymerase can initiate de novo",syns:["de novo","from scratch","no primer","start.*new","initiate"],weight:3},
+{term:"Primase provides RNA primer for replication",syns:["primase","rna primer","short primer","starter"],weight:2},
+{term:"Primers must be removed and replaced",syns:["remove","replace","DNA polymerase I","gap"],weight:2},
+{term:"Lagging strand needs multiple primers",syns:["lagging","okazaki","multiple primer","each fragment"],weight:2}
+],
+model:"DNA polymerase is chemically unable to start a new strand from scratch. It can only add nucleotides to an existing strand that has a free 3'-OH group. This is a fundamental limitation of the enzyme's active site. RNA polymerase, by contrast, can initiate a new strand de novo (from nothing) by placing the first nucleotide and then extending from there. During replication, this means the cell needs primase to lay down a short RNA primer to give DNA polymerase a 3'-OH to start from. The leading strand needs only one primer, but the lagging strand needs a new primer for every Okazaki fragment. After replication, DNA Polymerase I removes the RNA primers and fills the gaps with DNA, and ligase seals the remaining nicks."
+},
+{q:"Compare DNA and RNA. Explain at least four structural differences and connect each one to a functional difference.",
+concepts:[
+{term:"Sugar: deoxyribose vs ribose (stability)",syns:["deoxyribose","ribose","2'","OH","stable","stability"],weight:2},
+{term:"Bases: T in DNA, U in RNA",syns:["thymine","uracil","T","U","replace"],weight:2},
+{term:"Strands: double vs single",syns:["double","single","two strand","one strand"],weight:2},
+{term:"Function: storage vs carrying instructions",syns:["storage","long-term","temporary","messenger","carry","instruct","express"],weight:2},
+{term:"Location difference (nucleus vs both)",syns:["nucleus","cytoplasm","location","where"],weight:2}
+],
+model:"DNA uses deoxyribose sugar (missing the 2'-OH), making it more chemically stable and suited for long-term information storage. RNA uses ribose (with the 2'-OH), making it more reactive and less stable, appropriate for its temporary roles. DNA uses thymine; RNA uses uracil. DNA keeps thymine because the extra methyl group helps repair enzymes distinguish normal thymine from damaged (deaminated) cytosine, which would look like uracil. DNA is usually double-stranded, providing a backup copy for repair and Chargaff's-rule base pairing. RNA is usually single-stranded, allowing it to fold into diverse functional shapes (tRNA, rRNA, ribozymes). DNA is mostly confined to the nucleus for protection. RNA is found in both the nucleus (during transcription and processing) and the cytoplasm (during translation)."
+},
+{q:"A researcher isolates mRNA with the sequence 5'-AUGUUUCCCCUGUGA-3'. How many amino acids will the resulting protein have (not counting the initial methionine if it is later removed)? Walk through the codons.",
+concepts:[
+{term:"Read in triplets starting from AUG",syns:["triplet","codon","AUG","start","reading frame","three"],weight:3},
+{term:"Identify each codon correctly",syns:["UUU","CCC","CUG","UGA"],weight:2},
+{term:"UGA is a stop codon",syns:["UGA","stop","terminat"],weight:3},
+{term:"Count amino acids (4 total including Met)",syns:["4","four","3 plus met","methionine.*phe.*pro.*leu"],weight:2},
+{term:"Protein = Met-Phe-Pro-Leu (4 aa, or 3 if Met removed)",syns:["met","phe","pro","leu","methionine","phenylalanine","proline","leucine"],weight:2}
+],
+model:"Reading the mRNA 5'→3' in triplets from the start codon: AUG (Met) - UUU (Phe) - CCC (Pro) - CUG (Leu) - UGA (Stop). Translation begins at AUG and ends at UGA. The protein contains 4 amino acids: Met-Phe-Pro-Leu. If methionine is later cleaved (which often happens in post-translational processing), the protein would be 3 amino acids long. The key steps are identifying the start codon, reading in consecutive non-overlapping triplets, and recognizing UGA as a stop codon that does not code for an amino acid."
+}
+];
+
+// QUIZ ENGINE
+let answered=0,correct=0;
+const catSet=new Set();quizData.forEach(q=>catSet.add(q.cat));
+const catSel=document.getElementById('cat-filter');
+[...catSet].sort().forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;catSel.appendChild(o);});
+function renderQuiz(){
+  const df=document.getElementById('diff-filter').value;const cf=document.getElementById('cat-filter').value;
+  const area=document.getElementById('quiz-area');area.innerHTML='';answered=0;correct=0;updateScore();
+  const filtered=quizData.filter(q=>(df==='all'||q.diff===df)&&(cf==='all'||q.cat===cf));
+  filtered.forEach((q,idx)=>{
+    const div=document.createElement('div');div.className='q-card';div.id='q-'+idx;
+    let optsHtml='';q.opts.forEach((o,oi)=>{optsHtml+=`<label><input type="radio" name="q${idx}" value="${oi}"> ${o}</label>`;});
+    div.innerHTML=`<div class="q-diff ${q.diff}">${q.diff.toUpperCase()}</div><div class="q-text">${idx+1}. ${q.q}</div><div class="q-opts">${optsHtml}</div><button class="q-submit" onclick="checkQ(${idx},${q.ans})">Check Answer</button><div class="q-feedback" id="fb-${idx}"></div>`;
+    area.appendChild(div);
+  });
+}
+function checkQ(idx,ans){
+  const sel=document.querySelector(`input[name="q${idx}"]:checked`);if(!sel)return;
+  const fb=document.getElementById('fb-'+idx);const val=parseInt(sel.value);
+  const filtered=quizData.filter(q=>{const df=document.getElementById('diff-filter').value;const cf=document.getElementById('cat-filter').value;return(df==='all'||q.diff===df)&&(cf==='all'||q.cat===cf);});
+  const qObj=filtered[idx];answered++;
+  if(val===ans){correct++;fb.className='q-feedback correct';fb.innerHTML='<strong>Correct!</strong> '+qObj.exp;}
+  else{fb.className='q-feedback wrong';fb.innerHTML='<strong>Incorrect.</strong> '+qObj.exp;}
+  fb.style.display='block';document.querySelector(`#q-${idx} .q-submit`).disabled=true;updateScore();
+}
+function updateScore(){document.getElementById('score-text').textContent=`${correct} / ${answered}`;const pct=answered?Math.round((correct/answered)*100):0;document.getElementById('score-fill').style.width=pct+'%';}
+function filterQuiz(){renderQuiz();}
+function resetQuiz(){renderQuiz();}
+
+// FLASHCARD ENGINE
+let fcFiltered=[...fcData],fcIdx=0;
+const fcCats=[...new Set(fcData.map(c=>c.cat))].sort();
+const fcFiltersDiv=document.getElementById('fc-filters');
+const allBtn=document.createElement('button');allBtn.className='fc-filter active';allBtn.textContent='All';allBtn.onclick=()=>filterFC('all');fcFiltersDiv.appendChild(allBtn);
+fcCats.forEach(c=>{const b=document.createElement('button');b.className='fc-filter';b.textContent=c;b.onclick=()=>filterFC(c);fcFiltersDiv.appendChild(b);});
+function filterFC(cat){document.querySelectorAll('.fc-filter').forEach(b=>b.classList.remove('active'));if(cat==='all'){fcFiltered=[...fcData];document.querySelector('.fc-filter').classList.add('active');}else{fcFiltered=fcData.filter(c=>c.cat===cat);[...document.querySelectorAll('.fc-filter')].find(b=>b.textContent===cat).classList.add('active');}fcIdx=0;showCard();}
+function showCard(){if(!fcFiltered.length)return;const c=fcFiltered[fcIdx];document.getElementById('fc-cat').textContent=c.cat;document.getElementById('fc-q').innerHTML=c.f;document.getElementById('fc-a').innerHTML=c.b;document.getElementById('fc-inner').classList.remove('flipped');document.getElementById('fc-counter').textContent=`Card ${fcIdx+1} of ${fcFiltered.length}`;}
+function flipCard(){document.getElementById('fc-inner').classList.toggle('flipped');}
+function nextCard(){fcIdx=(fcIdx+1)%fcFiltered.length;showCard();}
+function prevCard(){fcIdx=(fcIdx-1+fcFiltered.length)%fcFiltered.length;showCard();}
+
+// SHORT ANSWER ENGINE
+function renderSA(){
+  const area=document.getElementById('sa-area');area.innerHTML='';
+  saData.forEach((sa,idx)=>{
+    const div=document.createElement('div');div.className='sa-card';
+    div.innerHTML=`<div class="sa-q">${idx+1}. ${sa.q}</div><textarea class="sa-textarea" id="sa-input-${idx}" placeholder="Type your answer here..."></textarea><button class="sa-submit" onclick="gradeSA(${idx})">Grade Answer</button><div class="sa-result" id="sa-result-${idx}"></div>`;
+    area.appendChild(div);
+  });
+}
+function gradeSA(idx){
+  const input=document.getElementById('sa-input-'+idx).value.toLowerCase();const sa=saData[idx];if(!input.trim())return;
+  let totalWeight=0,earnedWeight=0;const tags=[];
+  sa.concepts.forEach(c=>{totalWeight+=c.weight;const hit=c.syns.some(s=>input.includes(s.toLowerCase()));if(hit){earnedWeight+=c.weight;tags.push(`<span class="sa-tag hit">${c.term}</span>`);}else{tags.push(`<span class="sa-tag miss">${c.term}</span>`);}});
+  const words=input.split(/\s+/).length;const bonus=Math.min(words/50*0.05,0.1);
+  let pct=Math.min(Math.round(((earnedWeight/totalWeight)+bonus)*100),100);
+  const color=pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+  const res=document.getElementById('sa-result-'+idx);
+  res.innerHTML=`<div class="sa-pct" style="color:${color}">${pct}%</div><div class="sa-score-bar"><div class="sa-score-fill" style="width:${pct}%;background:${color};"></div></div><div class="sa-tags">${tags.join('')}</div><details class="sa-model"><summary>Show Model Answer</summary><div class="model-text">${sa.model}</div></details>`;
+  res.style.display='block';
+}
+renderQuiz();showCard();renderSA();
+</script>
+</body>
+</html>
