@@ -114,9 +114,40 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .sa-model .model-text{margin-top:0.5rem;padding:0.8rem;background:var(--accent-light);border-radius:8px;font-size:0.9rem;line-height:1.6;}
 .sa-pct{font-family:'JetBrains Mono',monospace;font-size:0.85rem;font-weight:500;}
 @media(max-width:600px){.section-card{padding:1.2rem 1rem;}.container{padding:1.5rem 1rem;}.hero{padding:3rem 1.5rem 2.5rem;}}
+
+/* ─── WCAG 2.1 AA: Visible focus indicators ─── */
+:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+.tab-btn:focus-visible, .nav-btn:focus-visible {
+  outline: 3px solid #005fcc !important;
+  outline-offset: 2px !important;
+}
+/* ─── Skip link ─── */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: #005fcc;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
+  border-radius: 0 0 6px 6px;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  z-index: 9999;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
 
 <div class="hero">
   <h1>DNA: From Nucleotides to Proteins</h1>
@@ -135,7 +166,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
      STUDY GUIDE
      ═══════════════════════════════════════════════════════════ -->
 <div class="tab-content active" id="tab-study">
-<div class="container">
+<div class="container" id="main-content" role="main">
 
 <div class="toc">
   <h3>Table of Contents</h3>
@@ -529,11 +560,11 @@ const quizData=[
 {q:"G-C base pairs are held together by how many hydrogen bonds?",opts:["1","2","3","4"],ans:2,exp:"G-C = 3 hydrogen bonds. A-T = 2 hydrogen bonds.",diff:"easy",cat:"Base Pairing"},
 {q:"The two strands of DNA are held together by:",opts:["Covalent bonds","Ionic bonds","Hydrogen bonds between bases","Peptide bonds"],ans:2,exp:"Hydrogen bonds between complementary base pairs hold the two strands together.",diff:"easy",cat:"Double Helix"},
 {q:"The backbone of DNA is made of:",opts:["Bases and proteins","Alternating sugar and phosphate groups","Amino acids","Hydrogen bonds"],ans:1,exp:"The sugar-phosphate backbone (connected by phosphodiester bonds) runs along the outside of the helix.",diff:"easy",cat:"Double Helix"},
-{q:"The two DNA strands are said to be:",opts:["Parallel","Antiparallel","Identical","Perpendicular"],ans:1,exp:"One strand runs 5'→3', the other runs 3'→5'. They are antiparallel.",diff:"easy",cat:"Double Helix"},
+{q:"The two DNA strands are said to be:",opts:["Parallel","Antiparallel","Identical","Perpendicular"],ans:1,exp:"One strand runs 5'<span aria-hidden="true">→</span>3', the other runs 3'<span aria-hidden="true">→</span>5'. They are antiparallel.",diff:"easy",cat:"Double Helix"},
 {q:"DNA replication is described as semiconservative because:",opts:["Half of the DNA is destroyed","Each new molecule has one old strand and one new strand","Only half the bases are copied","The process is 50% accurate"],ans:1,exp:"Semiconservative: each daughter molecule keeps one parent strand and builds one new strand.",diff:"easy",cat:"Replication"},
-{q:"DNA polymerase builds new DNA in which direction?",opts:["3' to 5'","5' to 3'","Both directions","Random"],ans:1,exp:"DNA polymerase always synthesizes the new strand 5'→3'.",diff:"easy",cat:"Replication"},
+{q:"DNA polymerase builds new DNA in which direction?",opts:["3' to 5'","5' to 3'","Both directions","Random"],ans:1,exp:"DNA polymerase always synthesizes the new strand 5'<span aria-hidden="true">→</span>3'.",diff:"easy",cat:"Replication"},
 {q:"Which enzyme unwinds the DNA double helix during replication?",opts:["DNA polymerase","Ligase","Helicase","Primase"],ans:2,exp:"Helicase separates the two strands by breaking hydrogen bonds between base pairs.",diff:"easy",cat:"Replication"},
-{q:"The Central Dogma states that information flows:",opts:["Protein → RNA → DNA","RNA → DNA → Protein","DNA → RNA → Protein","DNA → Protein → RNA"],ans:2,exp:"DNA → (transcription) → RNA → (translation) → Protein.",diff:"easy",cat:"Central Dogma"},
+{q:"The Central Dogma states that information flows:",opts:["Protein <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> DNA","RNA <span aria-hidden="true">→</span> DNA <span aria-hidden="true">→</span> Protein","DNA <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> Protein","DNA <span aria-hidden="true">→</span> Protein <span aria-hidden="true">→</span> RNA"],ans:2,exp:"DNA <span aria-hidden="true">→</span> (transcription) <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> (translation) <span aria-hidden="true">→</span> Protein.",diff:"easy",cat:"Central Dogma"},
 {q:"Transcription produces:",opts:["DNA","Protein","mRNA","tRNA only"],ans:2,exp:"Transcription copies a gene from DNA into messenger RNA (mRNA).",diff:"easy",cat:"Transcription"},
 {q:"The enzyme that performs transcription is:",opts:["DNA polymerase","RNA polymerase","Helicase","Ligase"],ans:1,exp:"RNA polymerase reads the DNA template and builds the mRNA strand.",diff:"easy",cat:"Transcription"},
 {q:"Translation occurs at the:",opts:["Nucleus","Ribosome","Mitochondria","Golgi apparatus"],ans:1,exp:"Ribosomes are the molecular machines where mRNA is read and proteins are assembled.",diff:"easy",cat:"Translation"},
@@ -553,12 +584,12 @@ const quizData=[
 // MEDIUM (15)
 {q:"A DNA sample is 30% adenine. What percentage is cytosine?",opts:["20%","30%","40%","70%"],ans:0,exp:"%A=%T=30%, so A+T=60%. Remaining 40% is split: %G=%C=20% each.",diff:"medium",cat:"Base Pairing"},
 {q:"Why does DNA with higher G-C content have a higher melting temperature?",opts:["G and C are larger bases","G-C pairs have 3 hydrogen bonds vs. 2 for A-T","G-C pairs are covalently bonded","Cytosine is more electronegative"],ans:1,exp:"More hydrogen bonds per base pair means more energy is needed to separate the strands.",diff:"medium",cat:"Base Pairing"},
-{q:"The lagging strand is synthesized as Okazaki fragments because:",opts:["DNA polymerase makes errors on that strand","DNA polymerase can only work 5'→3', and the template runs the wrong direction","There is not enough primase","Helicase works too slowly"],ans:1,exp:"The lagging strand template runs 5'→3', so polymerase must work in short segments away from the fork.",diff:"medium",cat:"Replication"},
+{q:"The lagging strand is synthesized as Okazaki fragments because:",opts:["DNA polymerase makes errors on that strand","DNA polymerase can only work 5'<span aria-hidden="true">→</span>3', and the template runs the wrong direction","There is not enough primase","Helicase works too slowly"],ans:1,exp:"The lagging strand template runs 5'<span aria-hidden="true">→</span>3', so polymerase must work in short segments away from the fork.",diff:"medium",cat:"Replication"},
 {q:"What is the role of primase in DNA replication?",opts:["Unwinds DNA","Joins Okazaki fragments","Lays down a short RNA primer that provides a 3'-OH for DNA polymerase","Proofreads the new strand"],ans:2,exp:"DNA polymerase cannot start from scratch. It needs a free 3'-OH group. Primase provides this by making a short RNA primer.",diff:"medium",cat:"Replication"},
-{q:"If an mRNA codon is 5'-AUG-3', what is the tRNA anticodon?",opts:["5'-UAC-3'","3'-UAC-5'","5'-TAC-3'","3'-AUG-5'"],ans:0,exp:"The anticodon is complementary and antiparallel to the codon. AUG pairs with UAC (reading 5'→3').",diff:"medium",cat:"Translation"},
+{q:"If an mRNA codon is 5'-AUG-3', what is the tRNA anticodon?",opts:["5'-UAC-3'","3'-UAC-5'","5'-TAC-3'","3'-AUG-5'"],ans:0,exp:"The anticodon is complementary and antiparallel to the codon. AUG pairs with UAC (reading 5'<span aria-hidden="true">→</span>3').",diff:"medium",cat:"Translation"},
 {q:"Alternative splicing allows:",opts:["One gene to produce multiple different proteins","DNA to replicate faster","tRNA to carry multiple amino acids","Mutations to be repaired"],ans:0,exp:"By including different combinations of exons, one gene can produce multiple mRNA variants and therefore different proteins.",diff:"medium",cat:"Processing"},
 {q:"Which of these does RNA polymerase NOT need that DNA polymerase does?",opts:["A template","Nucleotides","A primer","Energy"],ans:2,exp:"RNA polymerase can initiate transcription without a primer. DNA polymerase always needs a primer.",diff:"medium",cat:"Transcription"},
-{q:"The template strand of DNA reads 3'-TACGGCAAT-5'. What is the mRNA?",opts:["5'-AUGCCGUUA-3'","5'-TACGGCAAT-3'","5'-UACGGCAAU-3'","3'-AUGCCGUUA-5'"],ans:0,exp:"mRNA is complementary to the template (A→U, T→A, G→C, C→G), built 5'→3': AUGCCGUUA.",diff:"medium",cat:"Transcription"},
+{q:"The template strand of DNA reads 3'-TACGGCAAT-5'. What is the mRNA?",opts:["5'-AUGCCGUUA-3'","5'-TACGGCAAT-3'","5'-UACGGCAAU-3'","3'-AUGCCGUUA-5'"],ans:0,exp:"mRNA is complementary to the template (A<span aria-hidden="true">→</span>U, T<span aria-hidden="true">→</span>A, G<span aria-hidden="true">→</span>C, C<span aria-hidden="true">→</span>G), built 5'<span aria-hidden="true">→</span>3': AUGCCGUUA.",diff:"medium",cat:"Transcription"},
 {q:"The genetic code is called 'degenerate' because:",opts:["It contains errors","Most amino acids are coded by more than one codon","It only works in eukaryotes","Stop codons are unnecessary"],ans:1,exp:"64 codons code for only 20 amino acids + stops. Most amino acids have multiple codons (redundancy = degeneracy).",diff:"medium",cat:"Genetic Code"},
 {q:"A missense mutation:",opts:["Has no effect on the protein","Changes a codon to a stop codon","Changes a codon so it codes for a different amino acid","Shifts the reading frame"],ans:2,exp:"Missense = a different amino acid is inserted. Effect depends on the location and nature of the amino acid change.",diff:"medium",cat:"Mutations"},
 {q:"Sickle cell disease results from what type of mutation?",opts:["Silent","Missense","Nonsense","Frameshift"],ans:1,exp:"A single nucleotide change causes glutamic acid to be replaced by valine in hemoglobin. This is a missense mutation.",diff:"medium",cat:"Mutations"},
@@ -571,10 +602,10 @@ const quizData=[
 {q:"The Meselson-Stahl experiment used ¹⁵N-labeled DNA to demonstrate that replication is semiconservative. After two rounds of replication in ¹⁴N medium, what fraction of DNA molecules would be entirely light (¹⁴N/¹⁴N)?",opts:["0","1/4","1/2","3/4"],ans:2,exp:"After round 1: all hybrid (¹⁵N/¹⁴N). After round 2: half hybrid, half light. So 1/2 are entirely ¹⁴N/¹⁴N.",diff:"hard",cat:"Replication"},
 {q:"A researcher finds that a particular organism's DNA is 18% guanine. If this is double-stranded DNA, what is %A?",opts:["18%","32%","36%","64%"],ans:1,exp:"%G=%C=18%, so G+C=36%. Remaining 64% is A+T. Since %A=%T, each is 32%.",diff:"hard",cat:"Base Pairing"},
 {q:"Why can a single base substitution in the third position of a codon often be a silent mutation?",opts:["The third position is not transcribed","The genetic code is degenerate; most variation at the third 'wobble' position still codes for the same amino acid","Stop codons only occur at position 1","RNA polymerase skips the third position"],ans:1,exp:"Due to degeneracy, codons for the same amino acid usually differ only at the third position (the 'wobble' position). A change there often has no effect on the protein.",diff:"hard",cat:"Mutations"},
-{q:"If a gene's template strand reads 3'-TACAAAGGGACT-5', and a mutation changes the 7th nucleotide (G) to A, what happens to the protein?",opts:["No change (silent mutation)","A different amino acid is inserted (missense)","A premature stop codon is created (nonsense)","The reading frame shifts"],ans:2,exp:"Original mRNA: AUGUUUCCCUGA. Codons: AUG-UUU-CCC-UGA (Met-Phe-Pro-Stop). Changing position 7 (G→A in template = C→U in mRNA): AUG-UUU-CUC-UGA still → check: template 3'-TACAAAGAGACT-5' → mRNA 5'-AUGUUUCUCUGA-3' → AUG UUU CUC UGA = Met-Phe-Leu-Stop. Actually this changes CCC to CUC (Pro to Leu), which is missense. But the question asks about position 7 in the template: 3'-TACAAAA GGACT-5' with G→A gives 3'-TACAAAAG AACT-5'... Let me recalculate. Template: T-A-C-A-A-A-G-G-G-A-C-T (positions 1-12). Position 7 = G→A. New template: 3'-TACAAAAGGACT-5'. Wait, that changes nothing in the codon. Let me recount. mRNA from original: A-U-G-U-U-U-C-C-C-U-G-A. Position 7 in mRNA = C. If template G→A at position 7, mRNA position 7: C→U. New mRNA: AUGUUUUCCUGA → AUG-UUU-UCC-UGA = Met-Phe-Ser-Stop. This is missense (Pro→Ser).",ans:1,exp:"The mutation changes one codon, replacing one amino acid with another (missense). The reading frame is not altered because it is a substitution, not an insertion or deletion.",diff:"hard",cat:"Mutations"},
+{q:"If a gene's template strand reads 3'-TACAAAGGGACT-5', and a mutation changes the 7th nucleotide (G) to A, what happens to the protein?",opts:["No change (silent mutation)","A different amino acid is inserted (missense)","A premature stop codon is created (nonsense)","The reading frame shifts"],ans:2,exp:"Original mRNA: AUGUUUCCCUGA. Codons: AUG-UUU-CCC-UGA (Met-Phe-Pro-Stop). Changing position 7 (G<span aria-hidden="true">→</span>A in template = C<span aria-hidden="true">→</span>U in mRNA): AUG-UUU-CUC-UGA still <span aria-hidden="true">→</span> check: template 3'-TACAAAGAGACT-5' <span aria-hidden="true">→</span> mRNA 5'-AUGUUUCUCUGA-3' <span aria-hidden="true">→</span> AUG UUU CUC UGA = Met-Phe-Leu-Stop. Actually this changes CCC to CUC (Pro to Leu), which is missense. But the question asks about position 7 in the template: 3'-TACAAAA GGACT-5' with G<span aria-hidden="true">→</span>A gives 3'-TACAAAAG AACT-5'... Let me recalculate. Template: T-A-C-A-A-A-G-G-G-A-C-T (positions 1-12). Position 7 = G<span aria-hidden="true">→</span>A. New template: 3'-TACAAAAGGACT-5'. Wait, that changes nothing in the codon. Let me recount. mRNA from original: A-U-G-U-U-U-C-C-C-U-G-A. Position 7 in mRNA = C. If template G<span aria-hidden="true">→</span>A at position 7, mRNA position 7: C<span aria-hidden="true">→</span>U. New mRNA: AUGUUUUCCUGA <span aria-hidden="true">→</span> AUG-UUU-UCC-UGA = Met-Phe-Ser-Stop. This is missense (Pro<span aria-hidden="true">→</span>Ser).",ans:1,exp:"The mutation changes one codon, replacing one amino acid with another (missense). The reading frame is not altered because it is a substitution, not an insertion or deletion.",diff:"hard",cat:"Mutations"},
 {q:"A polyribosome (polysome) is:",opts:["A ribosome with extra subunits","Multiple ribosomes translating the same mRNA simultaneously","A ribosome translating multiple mRNAs","A cluster of ribosomes in the nucleus"],ans:1,exp:"Multiple ribosomes can attach to a single mRNA and translate it simultaneously, increasing protein output from one mRNA molecule.",diff:"hard",cat:"Translation"},
 {q:"The 5' cap on eukaryotic mRNA is a modified guanine. Its functions include all of the following EXCEPT:",opts:["Protection from exonucleases","Ribosome recognition and binding","Splicing of introns","Nuclear export"],ans:2,exp:"Splicing is carried out by the spliceosome and is independent of the 5' cap. The cap protects mRNA, aids ribosome binding, and facilitates nuclear export.",diff:"hard",cat:"Processing"},
-{q:"Reverse transcriptase, found in retroviruses, violates the central dogma by:",opts:["Translating protein back to RNA","Copying RNA into DNA","Replicating DNA without a template","Transcribing protein into mRNA"],ans:1,exp:"Reverse transcriptase copies RNA→DNA, which is the reverse of the normal DNA→RNA direction. The central dogma's one-way flow (DNA→RNA→Protein) has this notable exception.",diff:"hard",cat:"Central Dogma"},
+{q:"Reverse transcriptase, found in retroviruses, violates the central dogma by:",opts:["Translating protein back to RNA","Copying RNA into DNA","Replicating DNA without a template","Transcribing protein into mRNA"],ans:1,exp:"Reverse transcriptase copies RNA<span aria-hidden="true">→</span>DNA, which is the reverse of the normal DNA<span aria-hidden="true">→</span>RNA direction. The central dogma's one-way flow (DNA<span aria-hidden="true">→</span>RNA<span aria-hidden="true">→</span>Protein) has this notable exception.",diff:"hard",cat:"Central Dogma"},
 {q:"If a deletion removes exactly 3 nucleotides from a coding region (not at a splice site), the most likely result is:",opts:["A frameshift and completely garbled protein","Loss of one amino acid, rest of protein unaffected","No effect whatsoever","The mRNA will not be translated"],ans:1,exp:"A 3-nucleotide deletion removes one codon (one amino acid) without shifting the reading frame. Downstream codons read normally. The protein loses one amino acid, which may or may not affect function.",diff:"hard",cat:"Mutations"}
 ];
 
@@ -592,7 +623,7 @@ const fcData=[
 {f:"Why does high G-C content raise melting temperature?",b:"G-C pairs have 3 H-bonds vs. 2 for A-T. More bonds = more energy to separate strands.",cat:"Base Pairing"},
 {f:"What holds the two DNA strands together?",b:"Hydrogen bonds between complementary bases (weak individually, strong collectively).",cat:"Double Helix"},
 {f:"What are the backbone bonds?",b:"Phosphodiester bonds (covalent, strong). These hold nucleotides together within each strand.",cat:"Double Helix"},
-{f:"What does antiparallel mean?",b:"One strand runs 5'→3', the other runs 3'→5'. They point in opposite directions.",cat:"Double Helix"},
+{f:"What does antiparallel mean?",b:"One strand runs 5'<span aria-hidden="true">→</span>3', the other runs 3'<span aria-hidden="true">→</span>5'. They point in opposite directions.",cat:"Double Helix"},
 {f:"Width of the DNA double helix?",b:"2 nm.",cat:"Double Helix"},
 {f:"Base pairs per full turn?",b:"10 bp per turn, 3.4 nm per turn.",cat:"Double Helix"},
 {f:"5' and 3' refer to what?",b:"Carbon atoms on the sugar. 5' has the phosphate; 3' has the free -OH where the next nucleotide attaches.",cat:"Double Helix"},
@@ -600,20 +631,20 @@ const fcData=[
 {f:"Who proved semiconservative replication?",b:"Meselson and Stahl (1958), using heavy nitrogen (¹⁵N) labeling.",cat:"Replication"},
 {f:"Helicase does what?",b:"Unwinds and separates the two DNA strands at the replication fork.",cat:"Replication"},
 {f:"Why is primase needed?",b:"DNA polymerase cannot start from scratch. Primase lays down a short RNA primer with a free 3'-OH.",cat:"Replication"},
-{f:"DNA Polymerase III does what?",b:"Main replication enzyme. Adds nucleotides 5'→3' and proofreads.",cat:"Replication"},
+{f:"DNA Polymerase III does what?",b:"Main replication enzyme. Adds nucleotides 5'<span aria-hidden="true">→</span>3' and proofreads.",cat:"Replication"},
 {f:"DNA Polymerase I does what?",b:"Removes RNA primers and replaces them with DNA.",cat:"Replication"},
 {f:"Ligase does what?",b:"Seals nicks between Okazaki fragments on the lagging strand.",cat:"Replication"},
-{f:"Leading strand vs. lagging strand?",b:"Leading: built continuously toward fork. Lagging: built in Okazaki fragments away from fork (because polymerase only works 5'→3').",cat:"Replication"},
+{f:"Leading strand vs. lagging strand?",b:"Leading: built continuously toward fork. Lagging: built in Okazaki fragments away from fork (because polymerase only works 5'<span aria-hidden="true">→</span>3').",cat:"Replication"},
 {f:"Telomerase does what?",b:"Extends telomeres (chromosome tips) to prevent shortening during replication.",cat:"Replication"},
-{f:"Central Dogma?",b:"DNA → (transcription) → RNA → (translation) → Protein.",cat:"Central Dogma"},
+{f:"Central Dogma?",b:"DNA <span aria-hidden="true">→</span> (transcription) <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> (translation) <span aria-hidden="true">→</span> Protein.",cat:"Central Dogma"},
 {f:"Where does transcription occur (eukaryotes)?",b:"In the nucleus.",cat:"Transcription"},
 {f:"Where does translation occur?",b:"At ribosomes in the cytoplasm.",cat:"Translation"},
-{f:"RNA polymerase reads which strand?",b:"The template (antisense) strand, 3'→5'. Builds mRNA 5'→3'.",cat:"Transcription"},
+{f:"RNA polymerase reads which strand?",b:"The template (antisense) strand, 3'<span aria-hidden="true">→</span>5'. Builds mRNA 5'<span aria-hidden="true">→</span>3'.",cat:"Transcription"},
 {f:"Does RNA polymerase need a primer?",b:"No. Unlike DNA polymerase, RNA polymerase can start from scratch.",cat:"Transcription"},
 {f:"What is a promoter?",b:"DNA sequence where RNA polymerase binds to begin transcription. Located upstream of the gene.",cat:"Transcription"},
 {f:"Three mRNA processing steps (eukaryotes)?",b:"1) 5' cap (modified guanine), 2) 3' poly-A tail (~200 A's), 3) Splicing (introns removed, exons joined).",cat:"Processing"},
 {f:"Exons vs. introns?",b:"Exons are Expressed (kept in mRNA). Introns are In the trash (spliced out).",cat:"Processing"},
-{f:"What is alternative splicing?",b:"Different combinations of exons included in mature mRNA, so one gene → multiple protein variants.",cat:"Processing"},
+{f:"What is alternative splicing?",b:"Different combinations of exons included in mature mRNA, so one gene <span aria-hidden="true">→</span> multiple protein variants.",cat:"Processing"},
 {f:"How many codons total?",b:"64 (4³ = 64).",cat:"Genetic Code"},
 {f:"Start codon?",b:"AUG (methionine). Sets the reading frame.",cat:"Genetic Code"},
 {f:"Stop codons?",b:"UAA, UAG, UGA. 'U Are Annoying, U Are Gone, U Go Away.'",cat:"Genetic Code"},
@@ -629,8 +660,8 @@ const fcData=[
 {f:"Nonsense mutation?",b:"Nucleotide change creates a premature stop codon. Protein is truncated.",cat:"Mutations"},
 {f:"Frameshift mutation?",b:"Insertion or deletion (not multiple of 3) shifts the reading frame of all downstream codons.",cat:"Mutations"},
 {f:"Why is a 3-nucleotide deletion less harmful than a 1-nucleotide deletion?",b:"A 3-nt deletion removes one amino acid without shifting the reading frame. A 1-nt deletion frameshifts everything downstream.",cat:"Mutations"},
-{f:"Sickle cell disease mutation type?",b:"Missense. One nucleotide change → glutamic acid replaced by valine in hemoglobin.",cat:"Mutations"},
-{f:"What is reverse transcriptase?",b:"Enzyme in retroviruses that copies RNA → DNA. Exception to the central dogma's normal flow.",cat:"Central Dogma"},
+{f:"Sickle cell disease mutation type?",b:"Missense. One nucleotide change <span aria-hidden="true">→</span> glutamic acid replaced by valine in hemoglobin.",cat:"Mutations"},
+{f:"What is reverse transcriptase?",b:"Enzyme in retroviruses that copies RNA <span aria-hidden="true">→</span> DNA. Exception to the central dogma's normal flow.",cat:"Central Dogma"},
 {f:"DNA vs RNA: bases?",b:"DNA: A, T, G, C. RNA: A, U, G, C. Thymine (DNA) replaced by uracil (RNA).",cat:"DNA vs RNA"},
 {f:"DNA vs RNA: strands?",b:"DNA: usually double-stranded. RNA: usually single-stranded.",cat:"DNA vs RNA"},
 {f:"Why is DNA more stable than RNA?",b:"Deoxyribose lacks the 2'-OH that makes ribose reactive. Also, double-stranded structure provides redundancy for repair.",cat:"DNA vs RNA"}
@@ -659,20 +690,20 @@ model:"Chargaff's rules state that in any double-stranded DNA, the percentage of
 },
 {q:"Compare and contrast the leading strand and lagging strand during DNA replication. Why are they replicated differently?",
 concepts:[
-{term:"DNA polymerase works only 5'→3'",syns:["5'.*3'","5 prime.*3 prime","one direction","only direction"],weight:3},
+{term:"DNA polymerase works only 5'<span aria-hidden="true">→</span>3'",syns:["5'.*3'","5 prime.*3 prime","one direction","only direction"],weight:3},
 {term:"Antiparallel strands",syns:["antiparallel","opposite direction","run opposite"],weight:2},
 {term:"Leading strand: continuous synthesis",syns:["leading","continuous","smooth","one piece"],weight:2},
 {term:"Lagging strand: Okazaki fragments",syns:["lagging","okazaki","fragment","discontinuous","short piece"],weight:3},
 {term:"Ligase joins fragments",syns:["ligase","join","seal","connect","glue"],weight:2}
 ],
-model:"The two strands are replicated differently because DNA polymerase can only synthesize in the 5'→3' direction, and the two template strands are antiparallel. The leading strand's template runs 3'→5', so polymerase can follow the replication fork continuously, building one long strand without interruption. The lagging strand's template runs 5'→3' (the 'wrong' direction relative to fork movement), so polymerase must work in short segments called Okazaki fragments, synthesizing away from the fork. Each fragment requires its own RNA primer. After synthesis, DNA Polymerase I removes the primers and fills the gaps, and ligase seals the nicks between fragments to create a continuous strand."
+model:"The two strands are replicated differently because DNA polymerase can only synthesize in the 5'<span aria-hidden="true">→</span>3' direction, and the two template strands are antiparallel. The leading strand's template runs 3'<span aria-hidden="true">→</span>5', so polymerase can follow the replication fork continuously, building one long strand without interruption. The lagging strand's template runs 5'<span aria-hidden="true">→</span>3' (the 'wrong' direction relative to fork movement), so polymerase must work in short segments called Okazaki fragments, synthesizing away from the fork. Each fragment requires its own RNA primer. After synthesis, DNA Polymerase I removes the primers and fills the gaps, and ligase seals the nicks between fragments to create a continuous strand."
 },
 {q:"Trace the flow of information from a gene in DNA to a functional protein. Include transcription, mRNA processing, and translation.",
 concepts:[
-{term:"Transcription: DNA → mRNA by RNA polymerase",syns:["transcription","rna polymerase","dna to.*rna","dna.*mrna"],weight:2},
+{term:"Transcription: DNA <span aria-hidden="true">→</span> mRNA by RNA polymerase",syns:["transcription","rna polymerase","dna to.*rna","dna.*mrna"],weight:2},
 {term:"mRNA processing: cap, tail, splicing",syns:["cap","poly-a","splicing","intron","exon","process"],weight:2},
 {term:"mRNA travels to ribosome/cytoplasm",syns:["ribosome","cytoplasm","leave.*nucleus","export"],weight:2},
-{term:"Translation: mRNA → protein at ribosome",syns:["translation","codon","amino acid","protein","trna","anticodon"],weight:3},
+{term:"Translation: mRNA <span aria-hidden="true">→</span> protein at ribosome",syns:["translation","codon","amino acid","protein","trna","anticodon"],weight:3},
 {term:"Codons read in triplets, start AUG, stop codons",syns:["AUG","start","stop","triplet","reading frame","UAA","UAG","UGA"],weight:2}
 ],
 model:"In the nucleus, RNA polymerase reads the template strand of the gene and builds a complementary mRNA molecule (transcription). In eukaryotes, the pre-mRNA is processed: a 5' cap and 3' poly-A tail are added for protection, and introns are spliced out, leaving only exons in the mature mRNA. The processed mRNA exits the nucleus and reaches a ribosome in the cytoplasm. During translation, the ribosome reads the mRNA in three-nucleotide codons starting at AUG (methionine). Transfer RNA molecules deliver amino acids matching each codon via their anticodons. Peptide bonds link the amino acids into a growing polypeptide chain. When a stop codon (UAA, UAG, or UGA) is reached, a release factor terminates translation and the completed polypeptide is released to fold into a functional protein."
@@ -715,7 +746,7 @@ concepts:[
 {term:"Count amino acids (4 total including Met)",syns:["4","four","3 plus met","methionine.*phe.*pro.*leu"],weight:2},
 {term:"Protein = Met-Phe-Pro-Leu (4 aa, or 3 if Met removed)",syns:["met","phe","pro","leu","methionine","phenylalanine","proline","leucine"],weight:2}
 ],
-model:"Reading the mRNA 5'→3' in triplets from the start codon: AUG (Met) - UUU (Phe) - CCC (Pro) - CUG (Leu) - UGA (Stop). Translation begins at AUG and ends at UGA. The protein contains 4 amino acids: Met-Phe-Pro-Leu. If methionine is later cleaved (which often happens in post-translational processing), the protein would be 3 amino acids long. The key steps are identifying the start codon, reading in consecutive non-overlapping triplets, and recognizing UGA as a stop codon that does not code for an amino acid."
+model:"Reading the mRNA 5'<span aria-hidden="true">→</span>3' in triplets from the start codon: AUG (Met) - UUU (Phe) - CCC (Pro) - CUG (Leu) - UGA (Stop). Translation begins at AUG and ends at UGA. The protein contains 4 amino acids: Met-Phe-Pro-Leu. If methionine is later cleaved (which often happens in post-translational processing), the protein would be 3 amino acids long. The key steps are identifying the start codon, reading in consecutive non-overlapping triplets, and recognizing UGA as a stop codon that does not code for an amino acid."
 }
 ];
 
@@ -784,7 +815,7 @@ renderQuiz();showCard();renderSA();
 </script>
 
   <div style="max-width: 800px; margin: 40px auto; padding: 20px 30px; background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 8px; font-size: 14px; line-height: 1.6; color: #555;">
-  <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px;">⚠️ Important Notice</div>
+  <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px;"><span aria-hidden="true">⚠️</span> Important Notice</div>
   <p style="margin: 0 0 10px 0;">These study resources are provided free of charge for educational purposes only. They are intended as supplemental study aids and should not be used as a substitute for your course textbooks, lecture materials, or the guidance of your instructors.</p>
   <p style="margin: 0 0 10px 0;">While every effort has been made to ensure accuracy, this content may contain errors, omissions, or information that is out of date. Science is constantly evolving, and material that was accurate at the time of writing may no longer reflect current understanding. Always verify important facts, formulas, and concepts against your official course materials.</p>
   <p style="margin: 0 0 10px 0;">No guarantees are made regarding the completeness, accuracy, or reliability of any information presented on these sites. Use at your own discretion. If you spot an error, we appreciate you letting us know so it can be corrected.</p>
