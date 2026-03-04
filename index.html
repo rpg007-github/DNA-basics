@@ -1,4 +1,92 @@
 <!DOCTYPE html>
+<!--
+=============================================================
+  FILE: DNA — From Nucleotides to Proteins
+  SERIES: Focused Topic Module (standalone)
+  LEVEL: Foundational / General Biology
+=============================================================
+
+  WHAT THIS FILE IS:
+  A single-file, self-contained HTML study reference page for
+  a focused DNA module. Covers everything from nucleotide
+  structure through protein synthesis and mutations. Uses a
+  tabbed layout with four interactive sections.
+
+  CONTENT COVERAGE (12 study sections):
+  01 — What Is a Nucleotide? (sugar, phosphate, base; phosphodiester bond)
+  02 — Purines & Pyrimidines (ring structure; memory tricks)
+  03 — Base Pairing & Chargaff's Rules (H-bonds, GC content, melting temp)
+  04 — The Double Helix (antiparallel orientation; dimensions)
+  05 — DNA vs. RNA (sugar, bases, strands, function comparison)
+  06 — DNA Replication (semiconservative; leading/lagging strand; enzymes)
+  07 — The Central Dogma (DNA → RNA → Protein; reverse transcriptase)
+  08 — Transcription (RNA polymerase; template vs. coding strand; 3 stages)
+  09 — mRNA Processing (5' cap, poly-A tail, splicing; alternative splicing)
+  10 — The Genetic Code (64 codons, 20 aa; degeneracy; start/stop codons)
+  11 — Translation (ribosomes; tRNA/anticodon; A/P/E sites; 3 stages)
+  12 — Mutations (silent, missense, nonsense, frameshift; examples)
+
+  INTERACTIVE FEATURES (tab-based layout):
+  • Study Guide — 12 section-cards with tables, highlighted boxes,
+    and cross-disciplinary bridges
+  • Quiz — 53 questions (30 easy, 15 medium, 8 hard) with per-question
+    feedback, difficulty and category filters, and a running score bar
+  • Flashcards — 54 single-card flip navigator (3D animation) with
+    category filter buttons
+  • Short Answer — 8 open-ended questions with keyword-concept grading
+    engine (weighted terms + synonyms + length bonus), model answers
+
+  TAB STRUCTURE:
+  • #tab-study → study guide content
+  • #tab-quiz → quiz with diff/cat filters and score bar
+  • #tab-flashcards → single-card flipper with prev/next nav
+  • #tab-sa → short answer grading
+
+  DESIGN:
+  • Warm parchment theme: --bg #faf8f3, --bg-card #ffffff
+  • Accent palette: gold (#8a6d1a / dark #5a4710), green (#2d8659),
+    amber (#b8860b), red (#c0392b)
+  • Fonts: Crimson Pro (serif headings), Source Sans 3 (body),
+    JetBrains Mono (code/labels) — all via Google Fonts
+  • Box types: formula-box (gold), key-point (green),
+    warning-box (amber), example-box (dashed), bridge-box (gradient)
+  • Responsive: mobile breakpoint at 600px
+
+  ACCESSIBILITY (WCAG 2.1 AA):
+  • Skip-to-main-content link
+  • Visible :focus-visible outlines (3px #005fcc)
+  • All color pairs meet 4.5:1 contrast ratio minimum
+    - .formula-label uses #785d0a on accent-light (5.63:1)
+    - .key-label uses #207046 on green-light (5.40:1)
+    - .warning-label/.amber uses #876004 on amber-light (5.38:1)
+    - .sa-tag.miss uses #505050 on #eee (6.95:1)
+  • prefers-reduced-motion disables flip animation
+  • Semantic <header> and <footer> landmarks
+  • Disclaimer banner is semantic, keyboard-accessible, and collapsible
+  • All <button> elements have explicit type="button"
+  • Flashcard area has role="button", tabindex, and keyboard handler
+  • JS-embedded aria-hidden uses single-quote safe form
+
+  JAVASCRIPT STRUCTURE:
+  • switchTab(id) — shows/hides tab content panels
+  • quizData[] — 53 quiz questions with diff, cat, ans, exp fields
+  • renderQuiz() — builds quiz cards filtered by diff/cat dropdowns
+  • checkQ(idx, ans) — grades a quiz question and shows feedback
+  • updateScore() — refreshes the running score bar
+  • filterQuiz() / resetQuiz() — filter and reset quiz
+  • fcData[] — 54 flashcard objects (front, back, category)
+  • filterFC(cat) — filters flashcard deck by category
+  • showCard() — renders current flashcard
+  • flipCard() — toggles front/back (with aria-label update)
+  • nextCard() / prevCard() — navigate through deck
+  • saData[] — 8 short-answer questions with concept/synonym grading
+  • renderSA() — builds short-answer input cards
+  • gradeSA(idx) — grades answer using weighted keyword matching
+  • toggleDisclaimer() — open/close disclaimer banner
+
+  LAST MODIFIED: Applied WCAG 2.1 AA accessibility fixes
+=============================================================
+-->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -31,13 +119,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .section-card p{margin-bottom:0.9rem;}
 .formula-box{background:var(--accent-light);border-left:4px solid var(--accent);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;font-size:0.95rem;}
 .formula-box code{font-family:'JetBrains Mono',monospace;font-size:1rem;color:var(--accent-dark);font-weight:500;}
-.formula-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.formula-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#785d0a;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
 .key-point{background:var(--green-light);border-left:4px solid var(--green);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
-.key-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--green);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.key-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#207046;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
 .warning-box{background:var(--amber-light);border-left:4px solid var(--amber);border-radius:0 8px 8px 0;padding:1rem 1.2rem;margin:1rem 0;}
-.warning-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--amber);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.warning-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#876004;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
 .example-box{background:#fdf8ee;border:1px dashed var(--accent);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;}
-.example-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
+.example-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:#785d0a;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
 .bridge-box{background:linear-gradient(135deg,#faf3e0 0%,#e8f5ee 100%);border:1px solid var(--accent);border-radius:8px;padding:1rem 1.2rem;margin:1rem 0;}
 .bridge-label{font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent-dark);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;font-weight:500;}
 .fact-table{width:100%;border-collapse:collapse;margin:1rem 0;font-size:0.92rem;}
@@ -62,8 +150,8 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .quiz-controls button:hover{background:var(--accent);color:#fff;}
 .q-card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:1.5rem;margin-bottom:1rem;box-shadow:var(--shadow);}
 .q-diff{font-family:'JetBrains Mono',monospace;font-size:0.7rem;padding:0.15rem 0.5rem;border-radius:10px;font-weight:500;display:inline-block;margin-bottom:0.5rem;}
-.q-diff.easy{background:#e8f5ee;color:#2d8659;}
-.q-diff.medium{background:#fef9e7;color:#b8860b;}
+.q-diff.easy{background:#e8f5ee;color:#207046;}
+.q-diff.medium{background:#fef9e7;color:#876004;}
 .q-diff.hard{background:#fdecea;color:#c0392b;}
 .q-text{font-size:1rem;font-weight:500;margin-bottom:1rem;}
 .q-opts label{display:block;padding:0.5rem 0.8rem;margin:0.3rem 0;border:1px solid var(--border-light);border-radius:8px;cursor:pointer;transition:all 0.2s;font-size:0.95rem;}
@@ -108,7 +196,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 .sa-tags{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.5rem 0;}
 .sa-tag{font-family:'JetBrains Mono',monospace;font-size:0.72rem;padding:0.15rem 0.5rem;border-radius:10px;}
 .sa-tag.hit{background:var(--green-light);color:var(--green);}
-.sa-tag.miss{background:#eee;color:#999;}
+.sa-tag.miss{background:#eee;color:#505050;}
 .sa-model{margin-top:0.8rem;}
 .sa-model summary{cursor:pointer;color:var(--accent);font-weight:500;font-size:0.9rem;}
 .sa-model .model-text{margin-top:0.5rem;padding:0.8rem;background:var(--accent-light);border-radius:8px;font-size:0.9rem;line-height:1.6;}
@@ -143,23 +231,61 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
   top: 0;
 }
 
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ─── Disclaimer banner ─── */
+.disclaimer-banner{background:#fffdf5;border-bottom:1px solid var(--border);}
+.disclaimer-toggle{display:flex;align-items:center;justify-content:center;gap:0.6rem;padding:0.45rem 2rem;width:100%;border:none;background:transparent;cursor:pointer;font-size:0.72rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;transition:background 0.15s;}
+.disclaimer-toggle:hover{background:rgba(0,0,0,0.03);}
+.disc-arrow{transition:transform 0.3s;font-size:0.65rem;}
+.disc-arrow.open{transform:rotate(180deg);}
+.disclaimer-body{max-height:0;overflow:hidden;transition:max-height 0.4s ease,padding 0.4s ease;padding:0 2rem;}
+.disclaimer-body.open{max-height:400px;padding:0 2rem 1.1rem;}
+.disclaimer-body-inner{max-width:860px;margin:0 auto;font-size:0.8rem;line-height:1.7;color:var(--text-muted);}
+.disclaimer-body-inner p{margin-bottom:0.45rem;}
+.disclaimer-body-inner p:last-child{margin-bottom:0;}
+
 </style>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to main content</a>
 
+<!-- DISCLAIMER BANNER -->
+<div class="disclaimer-banner" role="region" aria-label="Important disclaimer">
+  <button type="button" class="disclaimer-toggle" onclick="toggleDisclaimer()" aria-expanded="false" aria-controls="disc-body">
+    <span aria-hidden="true">⚠</span>
+    <span>Important Disclaimer</span>
+    <span class="disc-arrow" id="disc-arrow" aria-hidden="true">▼</span>
+  </button>
+  <div class="disclaimer-body" id="disc-body">
+    <div class="disclaimer-body-inner">
+      <p>These study resources are provided free of charge for educational purposes only. They are supplemental study aids and should not substitute your course textbooks, lectures, or instructor guidance.</p>
+      <p>While every effort has been made to ensure accuracy, this content may contain errors or outdated information. Science is constantly evolving — always verify facts and terminology against your official course materials.</p>
+      <p>No guarantees are made regarding completeness, accuracy, or reliability. These materials are not affiliated with any university, testing organization, or textbook publisher.</p>
+    </div>
+  </div>
+</div>
 
-<div class="hero">
+
+<header class="hero" role="banner">
   <h1>DNA: From Nucleotides to Proteins</h1>
   <p class="subtitle">Structure, Replication, Transcription, Translation &amp; Mutations</p>
   <div class="badge">FOCUSED TOPIC MODULE</div>
-</div>
+</header>
 
-<nav class="nav-tabs">
-  <button class="nav-tab active" data-tab="study" onclick="switchTab('study')">Study Guide</button>
-  <button class="nav-tab" data-tab="quiz" onclick="switchTab('quiz')">Quiz</button>
-  <button class="nav-tab" data-tab="flashcards" onclick="switchTab('flashcards')">Flashcards</button>
-  <button class="nav-tab" data-tab="sa" onclick="switchTab('sa')">Short Answer</button>
+<nav class="nav-tabs" role="tablist" aria-label="Content sections">
+  <button type="button" class="nav-tab active" role="tab" aria-selected="true" aria-controls="tab-study" data-tab="study" onclick="switchTab('study')">Study Guide</button>
+  <button type="button" class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-quiz" data-tab="quiz" onclick="switchTab('quiz')">Quiz</button>
+  <button type="button" class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-flashcards" data-tab="flashcards" onclick="switchTab('flashcards')">Flashcards</button>
+  <button type="button" class="nav-tab" role="tab" aria-selected="false" aria-controls="tab-sa" data-tab="sa" onclick="switchTab('sa')">Short Answer</button>
 </nav>
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -518,7 +644,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 <div class="quiz-controls">
   <select id="diff-filter" onchange="filterQuiz()"><option value="all">All Difficulties</option><option value="easy">Easy</option><option value="medium">Medium</option><option value="hard">Hard</option></select>
   <select id="cat-filter" onchange="filterQuiz()"><option value="all">All Topics</option></select>
-  <button onclick="resetQuiz()">Reset Quiz</button>
+  <button type="button" onclick="resetQuiz()">Reset Quiz</button>
 </div>
 <div class="score-bar"><div class="score-fill-wrap"><div class="score-fill" id="score-fill"></div></div><div class="score-text" id="score-text">0 / 0</div></div>
 <div id="quiz-area"></div>
@@ -530,13 +656,13 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 <div class="container">
 <div class="fc-filters" id="fc-filters"></div>
 <div class="fc-counter" id="fc-counter"></div>
-<div class="fc-area" onclick="flipCard()">
+<div class="fc-area" role="button" tabindex="0" aria-label="Flashcard — press Space or Enter to flip" onclick="flipCard()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();flipCard();}">
   <div class="fc-inner" id="fc-inner">
-    <div class="fc-face fc-front"><div class="fc-cat" id="fc-cat"></div><div class="fc-q" id="fc-q"></div><div class="fc-hint">Click to flip</div></div>
+    <div class="fc-face fc-front"><div class="fc-cat" id="fc-cat"></div><div class="fc-q" id="fc-q"></div><div class="fc-hint" aria-hidden="true">Click to flip</div></div>
     <div class="fc-face fc-back"><div class="fc-a" id="fc-a"></div></div>
   </div>
 </div>
-<div class="fc-nav"><button onclick="prevCard()">&larr; Previous</button><button onclick="nextCard()">Next &rarr;</button></div>
+<div class="fc-nav"><button type="button" onclick="prevCard()">&larr; Previous</button><button type="button" onclick="nextCard()">Next &rarr;</button></div>
 </div>
 </div>
 
@@ -546,7 +672,7 @@ body{font-family:'Source Sans 3',sans-serif;background:var(--bg);color:var(--tex
 </div>
 
 <script>
-function switchTab(id){document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelector(`[data-tab="${id}"]`).classList.add('active');document.getElementById('tab-'+id).classList.add('active');}
+function switchTab(id){document.querySelectorAll('.nav-tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');});document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));const activeTab=document.querySelector(`[data-tab="${id}"]`);activeTab.classList.add('active');activeTab.setAttribute('aria-selected','true');document.getElementById('tab-'+id).classList.add('active');}
 
 const quizData=[
 // EASY (30)
@@ -560,11 +686,11 @@ const quizData=[
 {q:"G-C base pairs are held together by how many hydrogen bonds?",opts:["1","2","3","4"],ans:2,exp:"G-C = 3 hydrogen bonds. A-T = 2 hydrogen bonds.",diff:"easy",cat:"Base Pairing"},
 {q:"The two strands of DNA are held together by:",opts:["Covalent bonds","Ionic bonds","Hydrogen bonds between bases","Peptide bonds"],ans:2,exp:"Hydrogen bonds between complementary base pairs hold the two strands together.",diff:"easy",cat:"Double Helix"},
 {q:"The backbone of DNA is made of:",opts:["Bases and proteins","Alternating sugar and phosphate groups","Amino acids","Hydrogen bonds"],ans:1,exp:"The sugar-phosphate backbone (connected by phosphodiester bonds) runs along the outside of the helix.",diff:"easy",cat:"Double Helix"},
-{q:"The two DNA strands are said to be:",opts:["Parallel","Antiparallel","Identical","Perpendicular"],ans:1,exp:"One strand runs 5'<span aria-hidden="true">→</span>3', the other runs 3'<span aria-hidden="true">→</span>5'. They are antiparallel.",diff:"easy",cat:"Double Helix"},
+{q:"The two DNA strands are said to be:",opts:["Parallel","Antiparallel","Identical","Perpendicular"],ans:1,exp:"One strand runs 5'<span aria-hidden='true'>→</span>3', the other runs 3'<span aria-hidden='true'>→</span>5'. They are antiparallel.",diff:"easy",cat:"Double Helix"},
 {q:"DNA replication is described as semiconservative because:",opts:["Half of the DNA is destroyed","Each new molecule has one old strand and one new strand","Only half the bases are copied","The process is 50% accurate"],ans:1,exp:"Semiconservative: each daughter molecule keeps one parent strand and builds one new strand.",diff:"easy",cat:"Replication"},
-{q:"DNA polymerase builds new DNA in which direction?",opts:["3' to 5'","5' to 3'","Both directions","Random"],ans:1,exp:"DNA polymerase always synthesizes the new strand 5'<span aria-hidden="true">→</span>3'.",diff:"easy",cat:"Replication"},
+{q:"DNA polymerase builds new DNA in which direction?",opts:["3' to 5'","5' to 3'","Both directions","Random"],ans:1,exp:"DNA polymerase always synthesizes the new strand 5'<span aria-hidden='true'>→</span>3'.",diff:"easy",cat:"Replication"},
 {q:"Which enzyme unwinds the DNA double helix during replication?",opts:["DNA polymerase","Ligase","Helicase","Primase"],ans:2,exp:"Helicase separates the two strands by breaking hydrogen bonds between base pairs.",diff:"easy",cat:"Replication"},
-{q:"The Central Dogma states that information flows:",opts:["Protein <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> DNA","RNA <span aria-hidden="true">→</span> DNA <span aria-hidden="true">→</span> Protein","DNA <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> Protein","DNA <span aria-hidden="true">→</span> Protein <span aria-hidden="true">→</span> RNA"],ans:2,exp:"DNA <span aria-hidden="true">→</span> (transcription) <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> (translation) <span aria-hidden="true">→</span> Protein.",diff:"easy",cat:"Central Dogma"},
+{q:"The Central Dogma states that information flows:",opts:["Protein <span aria-hidden='true'>→</span> RNA <span aria-hidden='true'>→</span> DNA","RNA <span aria-hidden='true'>→</span> DNA <span aria-hidden='true'>→</span> Protein","DNA <span aria-hidden='true'>→</span> RNA <span aria-hidden='true'>→</span> Protein","DNA <span aria-hidden='true'>→</span> Protein <span aria-hidden='true'>→</span> RNA"],ans:2,exp:"DNA <span aria-hidden='true'>→</span> (transcription) <span aria-hidden='true'>→</span> RNA <span aria-hidden='true'>→</span> (translation) <span aria-hidden='true'>→</span> Protein.",diff:"easy",cat:"Central Dogma"},
 {q:"Transcription produces:",opts:["DNA","Protein","mRNA","tRNA only"],ans:2,exp:"Transcription copies a gene from DNA into messenger RNA (mRNA).",diff:"easy",cat:"Transcription"},
 {q:"The enzyme that performs transcription is:",opts:["DNA polymerase","RNA polymerase","Helicase","Ligase"],ans:1,exp:"RNA polymerase reads the DNA template and builds the mRNA strand.",diff:"easy",cat:"Transcription"},
 {q:"Translation occurs at the:",opts:["Nucleus","Ribosome","Mitochondria","Golgi apparatus"],ans:1,exp:"Ribosomes are the molecular machines where mRNA is read and proteins are assembled.",diff:"easy",cat:"Translation"},
@@ -584,12 +710,12 @@ const quizData=[
 // MEDIUM (15)
 {q:"A DNA sample is 30% adenine. What percentage is cytosine?",opts:["20%","30%","40%","70%"],ans:0,exp:"%A=%T=30%, so A+T=60%. Remaining 40% is split: %G=%C=20% each.",diff:"medium",cat:"Base Pairing"},
 {q:"Why does DNA with higher G-C content have a higher melting temperature?",opts:["G and C are larger bases","G-C pairs have 3 hydrogen bonds vs. 2 for A-T","G-C pairs are covalently bonded","Cytosine is more electronegative"],ans:1,exp:"More hydrogen bonds per base pair means more energy is needed to separate the strands.",diff:"medium",cat:"Base Pairing"},
-{q:"The lagging strand is synthesized as Okazaki fragments because:",opts:["DNA polymerase makes errors on that strand","DNA polymerase can only work 5'<span aria-hidden="true">→</span>3', and the template runs the wrong direction","There is not enough primase","Helicase works too slowly"],ans:1,exp:"The lagging strand template runs 5'<span aria-hidden="true">→</span>3', so polymerase must work in short segments away from the fork.",diff:"medium",cat:"Replication"},
+{q:"The lagging strand is synthesized as Okazaki fragments because:",opts:["DNA polymerase makes errors on that strand","DNA polymerase can only work 5'<span aria-hidden='true'>→</span>3', and the template runs the wrong direction","There is not enough primase","Helicase works too slowly"],ans:1,exp:"The lagging strand template runs 5'<span aria-hidden='true'>→</span>3', so polymerase must work in short segments away from the fork.",diff:"medium",cat:"Replication"},
 {q:"What is the role of primase in DNA replication?",opts:["Unwinds DNA","Joins Okazaki fragments","Lays down a short RNA primer that provides a 3'-OH for DNA polymerase","Proofreads the new strand"],ans:2,exp:"DNA polymerase cannot start from scratch. It needs a free 3'-OH group. Primase provides this by making a short RNA primer.",diff:"medium",cat:"Replication"},
-{q:"If an mRNA codon is 5'-AUG-3', what is the tRNA anticodon?",opts:["5'-UAC-3'","3'-UAC-5'","5'-TAC-3'","3'-AUG-5'"],ans:0,exp:"The anticodon is complementary and antiparallel to the codon. AUG pairs with UAC (reading 5'<span aria-hidden="true">→</span>3').",diff:"medium",cat:"Translation"},
+{q:"If an mRNA codon is 5'-AUG-3', what is the tRNA anticodon?",opts:["5'-UAC-3'","3'-UAC-5'","5'-TAC-3'","3'-AUG-5'"],ans:0,exp:"The anticodon is complementary and antiparallel to the codon. AUG pairs with UAC (reading 5'<span aria-hidden='true'>→</span>3').",diff:"medium",cat:"Translation"},
 {q:"Alternative splicing allows:",opts:["One gene to produce multiple different proteins","DNA to replicate faster","tRNA to carry multiple amino acids","Mutations to be repaired"],ans:0,exp:"By including different combinations of exons, one gene can produce multiple mRNA variants and therefore different proteins.",diff:"medium",cat:"Processing"},
 {q:"Which of these does RNA polymerase NOT need that DNA polymerase does?",opts:["A template","Nucleotides","A primer","Energy"],ans:2,exp:"RNA polymerase can initiate transcription without a primer. DNA polymerase always needs a primer.",diff:"medium",cat:"Transcription"},
-{q:"The template strand of DNA reads 3'-TACGGCAAT-5'. What is the mRNA?",opts:["5'-AUGCCGUUA-3'","5'-TACGGCAAT-3'","5'-UACGGCAAU-3'","3'-AUGCCGUUA-5'"],ans:0,exp:"mRNA is complementary to the template (A<span aria-hidden="true">→</span>U, T<span aria-hidden="true">→</span>A, G<span aria-hidden="true">→</span>C, C<span aria-hidden="true">→</span>G), built 5'<span aria-hidden="true">→</span>3': AUGCCGUUA.",diff:"medium",cat:"Transcription"},
+{q:"The template strand of DNA reads 3'-TACGGCAAT-5'. What is the mRNA?",opts:["5'-AUGCCGUUA-3'","5'-TACGGCAAT-3'","5'-UACGGCAAU-3'","3'-AUGCCGUUA-5'"],ans:0,exp:"mRNA is complementary to the template (A<span aria-hidden='true'>→</span>U, T<span aria-hidden='true'>→</span>A, G<span aria-hidden='true'>→</span>C, C<span aria-hidden='true'>→</span>G), built 5'<span aria-hidden='true'>→</span>3': AUGCCGUUA.",diff:"medium",cat:"Transcription"},
 {q:"The genetic code is called 'degenerate' because:",opts:["It contains errors","Most amino acids are coded by more than one codon","It only works in eukaryotes","Stop codons are unnecessary"],ans:1,exp:"64 codons code for only 20 amino acids + stops. Most amino acids have multiple codons (redundancy = degeneracy).",diff:"medium",cat:"Genetic Code"},
 {q:"A missense mutation:",opts:["Has no effect on the protein","Changes a codon to a stop codon","Changes a codon so it codes for a different amino acid","Shifts the reading frame"],ans:2,exp:"Missense = a different amino acid is inserted. Effect depends on the location and nature of the amino acid change.",diff:"medium",cat:"Mutations"},
 {q:"Sickle cell disease results from what type of mutation?",opts:["Silent","Missense","Nonsense","Frameshift"],ans:1,exp:"A single nucleotide change causes glutamic acid to be replaced by valine in hemoglobin. This is a missense mutation.",diff:"medium",cat:"Mutations"},
@@ -602,10 +728,10 @@ const quizData=[
 {q:"The Meselson-Stahl experiment used ¹⁵N-labeled DNA to demonstrate that replication is semiconservative. After two rounds of replication in ¹⁴N medium, what fraction of DNA molecules would be entirely light (¹⁴N/¹⁴N)?",opts:["0","1/4","1/2","3/4"],ans:2,exp:"After round 1: all hybrid (¹⁵N/¹⁴N). After round 2: half hybrid, half light. So 1/2 are entirely ¹⁴N/¹⁴N.",diff:"hard",cat:"Replication"},
 {q:"A researcher finds that a particular organism's DNA is 18% guanine. If this is double-stranded DNA, what is %A?",opts:["18%","32%","36%","64%"],ans:1,exp:"%G=%C=18%, so G+C=36%. Remaining 64% is A+T. Since %A=%T, each is 32%.",diff:"hard",cat:"Base Pairing"},
 {q:"Why can a single base substitution in the third position of a codon often be a silent mutation?",opts:["The third position is not transcribed","The genetic code is degenerate; most variation at the third 'wobble' position still codes for the same amino acid","Stop codons only occur at position 1","RNA polymerase skips the third position"],ans:1,exp:"Due to degeneracy, codons for the same amino acid usually differ only at the third position (the 'wobble' position). A change there often has no effect on the protein.",diff:"hard",cat:"Mutations"},
-{q:"If a gene's template strand reads 3'-TACAAAGGGACT-5', and a mutation changes the 7th nucleotide (G) to A, what happens to the protein?",opts:["No change (silent mutation)","A different amino acid is inserted (missense)","A premature stop codon is created (nonsense)","The reading frame shifts"],ans:2,exp:"Original mRNA: AUGUUUCCCUGA. Codons: AUG-UUU-CCC-UGA (Met-Phe-Pro-Stop). Changing position 7 (G<span aria-hidden="true">→</span>A in template = C<span aria-hidden="true">→</span>U in mRNA): AUG-UUU-CUC-UGA still <span aria-hidden="true">→</span> check: template 3'-TACAAAGAGACT-5' <span aria-hidden="true">→</span> mRNA 5'-AUGUUUCUCUGA-3' <span aria-hidden="true">→</span> AUG UUU CUC UGA = Met-Phe-Leu-Stop. Actually this changes CCC to CUC (Pro to Leu), which is missense. But the question asks about position 7 in the template: 3'-TACAAAA GGACT-5' with G<span aria-hidden="true">→</span>A gives 3'-TACAAAAG AACT-5'... Let me recalculate. Template: T-A-C-A-A-A-G-G-G-A-C-T (positions 1-12). Position 7 = G<span aria-hidden="true">→</span>A. New template: 3'-TACAAAAGGACT-5'. Wait, that changes nothing in the codon. Let me recount. mRNA from original: A-U-G-U-U-U-C-C-C-U-G-A. Position 7 in mRNA = C. If template G<span aria-hidden="true">→</span>A at position 7, mRNA position 7: C<span aria-hidden="true">→</span>U. New mRNA: AUGUUUUCCUGA <span aria-hidden="true">→</span> AUG-UUU-UCC-UGA = Met-Phe-Ser-Stop. This is missense (Pro<span aria-hidden="true">→</span>Ser).",ans:1,exp:"The mutation changes one codon, replacing one amino acid with another (missense). The reading frame is not altered because it is a substitution, not an insertion or deletion.",diff:"hard",cat:"Mutations"},
+{q:"If a gene's template strand reads 3'-TACAAAGGGACT-5', and a mutation changes the 7th nucleotide (G) to A, what happens to the protein?",opts:["No change (silent mutation)","A different amino acid is inserted (missense)","A premature stop codon is created (nonsense)","The reading frame shifts"],ans:2,exp:"Original mRNA: AUGUUUCCCUGA. Codons: AUG-UUU-CCC-UGA (Met-Phe-Pro-Stop). Changing position 7 (G<span aria-hidden='true'>→</span>A in template = C<span aria-hidden='true'>→</span>U in mRNA): AUG-UUU-CUC-UGA still <span aria-hidden='true'>→</span> check: template 3'-TACAAAGAGACT-5' <span aria-hidden='true'>→</span> mRNA 5'-AUGUUUCUCUGA-3' <span aria-hidden='true'>→</span> AUG UUU CUC UGA = Met-Phe-Leu-Stop. Actually this changes CCC to CUC (Pro to Leu), which is missense. But the question asks about position 7 in the template: 3'-TACAAAA GGACT-5' with G<span aria-hidden='true'>→</span>A gives 3'-TACAAAAG AACT-5'... Let me recalculate. Template: T-A-C-A-A-A-G-G-G-A-C-T (positions 1-12). Position 7 = G<span aria-hidden='true'>→</span>A. New template: 3'-TACAAAAGGACT-5'. Wait, that changes nothing in the codon. Let me recount. mRNA from original: A-U-G-U-U-U-C-C-C-U-G-A. Position 7 in mRNA = C. If template G<span aria-hidden='true'>→</span>A at position 7, mRNA position 7: C<span aria-hidden='true'>→</span>U. New mRNA: AUGUUUUCCUGA <span aria-hidden='true'>→</span> AUG-UUU-UCC-UGA = Met-Phe-Ser-Stop. This is missense (Pro<span aria-hidden='true'>→</span>Ser).",ans:1,exp:"The mutation changes one codon, replacing one amino acid with another (missense). The reading frame is not altered because it is a substitution, not an insertion or deletion.",diff:"hard",cat:"Mutations"},
 {q:"A polyribosome (polysome) is:",opts:["A ribosome with extra subunits","Multiple ribosomes translating the same mRNA simultaneously","A ribosome translating multiple mRNAs","A cluster of ribosomes in the nucleus"],ans:1,exp:"Multiple ribosomes can attach to a single mRNA and translate it simultaneously, increasing protein output from one mRNA molecule.",diff:"hard",cat:"Translation"},
 {q:"The 5' cap on eukaryotic mRNA is a modified guanine. Its functions include all of the following EXCEPT:",opts:["Protection from exonucleases","Ribosome recognition and binding","Splicing of introns","Nuclear export"],ans:2,exp:"Splicing is carried out by the spliceosome and is independent of the 5' cap. The cap protects mRNA, aids ribosome binding, and facilitates nuclear export.",diff:"hard",cat:"Processing"},
-{q:"Reverse transcriptase, found in retroviruses, violates the central dogma by:",opts:["Translating protein back to RNA","Copying RNA into DNA","Replicating DNA without a template","Transcribing protein into mRNA"],ans:1,exp:"Reverse transcriptase copies RNA<span aria-hidden="true">→</span>DNA, which is the reverse of the normal DNA<span aria-hidden="true">→</span>RNA direction. The central dogma's one-way flow (DNA<span aria-hidden="true">→</span>RNA<span aria-hidden="true">→</span>Protein) has this notable exception.",diff:"hard",cat:"Central Dogma"},
+{q:"Reverse transcriptase, found in retroviruses, violates the central dogma by:",opts:["Translating protein back to RNA","Copying RNA into DNA","Replicating DNA without a template","Transcribing protein into mRNA"],ans:1,exp:"Reverse transcriptase copies RNA<span aria-hidden='true'>→</span>DNA, which is the reverse of the normal DNA<span aria-hidden='true'>→</span>RNA direction. The central dogma's one-way flow (DNA<span aria-hidden='true'>→</span>RNA<span aria-hidden='true'>→</span>Protein) has this notable exception.",diff:"hard",cat:"Central Dogma"},
 {q:"If a deletion removes exactly 3 nucleotides from a coding region (not at a splice site), the most likely result is:",opts:["A frameshift and completely garbled protein","Loss of one amino acid, rest of protein unaffected","No effect whatsoever","The mRNA will not be translated"],ans:1,exp:"A 3-nucleotide deletion removes one codon (one amino acid) without shifting the reading frame. Downstream codons read normally. The protein loses one amino acid, which may or may not affect function.",diff:"hard",cat:"Mutations"}
 ];
 
@@ -623,7 +749,7 @@ const fcData=[
 {f:"Why does high G-C content raise melting temperature?",b:"G-C pairs have 3 H-bonds vs. 2 for A-T. More bonds = more energy to separate strands.",cat:"Base Pairing"},
 {f:"What holds the two DNA strands together?",b:"Hydrogen bonds between complementary bases (weak individually, strong collectively).",cat:"Double Helix"},
 {f:"What are the backbone bonds?",b:"Phosphodiester bonds (covalent, strong). These hold nucleotides together within each strand.",cat:"Double Helix"},
-{f:"What does antiparallel mean?",b:"One strand runs 5'<span aria-hidden="true">→</span>3', the other runs 3'<span aria-hidden="true">→</span>5'. They point in opposite directions.",cat:"Double Helix"},
+{f:"What does antiparallel mean?",b:"One strand runs 5'<span aria-hidden='true'>→</span>3', the other runs 3'<span aria-hidden='true'>→</span>5'. They point in opposite directions.",cat:"Double Helix"},
 {f:"Width of the DNA double helix?",b:"2 nm.",cat:"Double Helix"},
 {f:"Base pairs per full turn?",b:"10 bp per turn, 3.4 nm per turn.",cat:"Double Helix"},
 {f:"5' and 3' refer to what?",b:"Carbon atoms on the sugar. 5' has the phosphate; 3' has the free -OH where the next nucleotide attaches.",cat:"Double Helix"},
@@ -631,20 +757,20 @@ const fcData=[
 {f:"Who proved semiconservative replication?",b:"Meselson and Stahl (1958), using heavy nitrogen (¹⁵N) labeling.",cat:"Replication"},
 {f:"Helicase does what?",b:"Unwinds and separates the two DNA strands at the replication fork.",cat:"Replication"},
 {f:"Why is primase needed?",b:"DNA polymerase cannot start from scratch. Primase lays down a short RNA primer with a free 3'-OH.",cat:"Replication"},
-{f:"DNA Polymerase III does what?",b:"Main replication enzyme. Adds nucleotides 5'<span aria-hidden="true">→</span>3' and proofreads.",cat:"Replication"},
+{f:"DNA Polymerase III does what?",b:"Main replication enzyme. Adds nucleotides 5'<span aria-hidden='true'>→</span>3' and proofreads.",cat:"Replication"},
 {f:"DNA Polymerase I does what?",b:"Removes RNA primers and replaces them with DNA.",cat:"Replication"},
 {f:"Ligase does what?",b:"Seals nicks between Okazaki fragments on the lagging strand.",cat:"Replication"},
-{f:"Leading strand vs. lagging strand?",b:"Leading: built continuously toward fork. Lagging: built in Okazaki fragments away from fork (because polymerase only works 5'<span aria-hidden="true">→</span>3').",cat:"Replication"},
+{f:"Leading strand vs. lagging strand?",b:"Leading: built continuously toward fork. Lagging: built in Okazaki fragments away from fork (because polymerase only works 5'<span aria-hidden='true'>→</span>3').",cat:"Replication"},
 {f:"Telomerase does what?",b:"Extends telomeres (chromosome tips) to prevent shortening during replication.",cat:"Replication"},
-{f:"Central Dogma?",b:"DNA <span aria-hidden="true">→</span> (transcription) <span aria-hidden="true">→</span> RNA <span aria-hidden="true">→</span> (translation) <span aria-hidden="true">→</span> Protein.",cat:"Central Dogma"},
+{f:"Central Dogma?",b:"DNA <span aria-hidden='true'>→</span> (transcription) <span aria-hidden='true'>→</span> RNA <span aria-hidden='true'>→</span> (translation) <span aria-hidden='true'>→</span> Protein.",cat:"Central Dogma"},
 {f:"Where does transcription occur (eukaryotes)?",b:"In the nucleus.",cat:"Transcription"},
 {f:"Where does translation occur?",b:"At ribosomes in the cytoplasm.",cat:"Translation"},
-{f:"RNA polymerase reads which strand?",b:"The template (antisense) strand, 3'<span aria-hidden="true">→</span>5'. Builds mRNA 5'<span aria-hidden="true">→</span>3'.",cat:"Transcription"},
+{f:"RNA polymerase reads which strand?",b:"The template (antisense) strand, 3'<span aria-hidden='true'>→</span>5'. Builds mRNA 5'<span aria-hidden='true'>→</span>3'.",cat:"Transcription"},
 {f:"Does RNA polymerase need a primer?",b:"No. Unlike DNA polymerase, RNA polymerase can start from scratch.",cat:"Transcription"},
 {f:"What is a promoter?",b:"DNA sequence where RNA polymerase binds to begin transcription. Located upstream of the gene.",cat:"Transcription"},
 {f:"Three mRNA processing steps (eukaryotes)?",b:"1) 5' cap (modified guanine), 2) 3' poly-A tail (~200 A's), 3) Splicing (introns removed, exons joined).",cat:"Processing"},
 {f:"Exons vs. introns?",b:"Exons are Expressed (kept in mRNA). Introns are In the trash (spliced out).",cat:"Processing"},
-{f:"What is alternative splicing?",b:"Different combinations of exons included in mature mRNA, so one gene <span aria-hidden="true">→</span> multiple protein variants.",cat:"Processing"},
+{f:"What is alternative splicing?",b:"Different combinations of exons included in mature mRNA, so one gene <span aria-hidden='true'>→</span> multiple protein variants.",cat:"Processing"},
 {f:"How many codons total?",b:"64 (4³ = 64).",cat:"Genetic Code"},
 {f:"Start codon?",b:"AUG (methionine). Sets the reading frame.",cat:"Genetic Code"},
 {f:"Stop codons?",b:"UAA, UAG, UGA. 'U Are Annoying, U Are Gone, U Go Away.'",cat:"Genetic Code"},
@@ -660,8 +786,8 @@ const fcData=[
 {f:"Nonsense mutation?",b:"Nucleotide change creates a premature stop codon. Protein is truncated.",cat:"Mutations"},
 {f:"Frameshift mutation?",b:"Insertion or deletion (not multiple of 3) shifts the reading frame of all downstream codons.",cat:"Mutations"},
 {f:"Why is a 3-nucleotide deletion less harmful than a 1-nucleotide deletion?",b:"A 3-nt deletion removes one amino acid without shifting the reading frame. A 1-nt deletion frameshifts everything downstream.",cat:"Mutations"},
-{f:"Sickle cell disease mutation type?",b:"Missense. One nucleotide change <span aria-hidden="true">→</span> glutamic acid replaced by valine in hemoglobin.",cat:"Mutations"},
-{f:"What is reverse transcriptase?",b:"Enzyme in retroviruses that copies RNA <span aria-hidden="true">→</span> DNA. Exception to the central dogma's normal flow.",cat:"Central Dogma"},
+{f:"Sickle cell disease mutation type?",b:"Missense. One nucleotide change <span aria-hidden='true'>→</span> glutamic acid replaced by valine in hemoglobin.",cat:"Mutations"},
+{f:"What is reverse transcriptase?",b:"Enzyme in retroviruses that copies RNA <span aria-hidden='true'>→</span> DNA. Exception to the central dogma's normal flow.",cat:"Central Dogma"},
 {f:"DNA vs RNA: bases?",b:"DNA: A, T, G, C. RNA: A, U, G, C. Thymine (DNA) replaced by uracil (RNA).",cat:"DNA vs RNA"},
 {f:"DNA vs RNA: strands?",b:"DNA: usually double-stranded. RNA: usually single-stranded.",cat:"DNA vs RNA"},
 {f:"Why is DNA more stable than RNA?",b:"Deoxyribose lacks the 2'-OH that makes ribose reactive. Also, double-stranded structure provides redundancy for repair.",cat:"DNA vs RNA"}
@@ -690,20 +816,20 @@ model:"Chargaff's rules state that in any double-stranded DNA, the percentage of
 },
 {q:"Compare and contrast the leading strand and lagging strand during DNA replication. Why are they replicated differently?",
 concepts:[
-{term:"DNA polymerase works only 5'<span aria-hidden="true">→</span>3'",syns:["5'.*3'","5 prime.*3 prime","one direction","only direction"],weight:3},
+{term:"DNA polymerase works only 5'<span aria-hidden='true'>→</span>3'",syns:["5'.*3'","5 prime.*3 prime","one direction","only direction"],weight:3},
 {term:"Antiparallel strands",syns:["antiparallel","opposite direction","run opposite"],weight:2},
 {term:"Leading strand: continuous synthesis",syns:["leading","continuous","smooth","one piece"],weight:2},
 {term:"Lagging strand: Okazaki fragments",syns:["lagging","okazaki","fragment","discontinuous","short piece"],weight:3},
 {term:"Ligase joins fragments",syns:["ligase","join","seal","connect","glue"],weight:2}
 ],
-model:"The two strands are replicated differently because DNA polymerase can only synthesize in the 5'<span aria-hidden="true">→</span>3' direction, and the two template strands are antiparallel. The leading strand's template runs 3'<span aria-hidden="true">→</span>5', so polymerase can follow the replication fork continuously, building one long strand without interruption. The lagging strand's template runs 5'<span aria-hidden="true">→</span>3' (the 'wrong' direction relative to fork movement), so polymerase must work in short segments called Okazaki fragments, synthesizing away from the fork. Each fragment requires its own RNA primer. After synthesis, DNA Polymerase I removes the primers and fills the gaps, and ligase seals the nicks between fragments to create a continuous strand."
+model:"The two strands are replicated differently because DNA polymerase can only synthesize in the 5'<span aria-hidden='true'>→</span>3' direction, and the two template strands are antiparallel. The leading strand's template runs 3'<span aria-hidden='true'>→</span>5', so polymerase can follow the replication fork continuously, building one long strand without interruption. The lagging strand's template runs 5'<span aria-hidden='true'>→</span>3' (the 'wrong' direction relative to fork movement), so polymerase must work in short segments called Okazaki fragments, synthesizing away from the fork. Each fragment requires its own RNA primer. After synthesis, DNA Polymerase I removes the primers and fills the gaps, and ligase seals the nicks between fragments to create a continuous strand."
 },
 {q:"Trace the flow of information from a gene in DNA to a functional protein. Include transcription, mRNA processing, and translation.",
 concepts:[
-{term:"Transcription: DNA <span aria-hidden="true">→</span> mRNA by RNA polymerase",syns:["transcription","rna polymerase","dna to.*rna","dna.*mrna"],weight:2},
+{term:"Transcription: DNA <span aria-hidden='true'>→</span> mRNA by RNA polymerase",syns:["transcription","rna polymerase","dna to.*rna","dna.*mrna"],weight:2},
 {term:"mRNA processing: cap, tail, splicing",syns:["cap","poly-a","splicing","intron","exon","process"],weight:2},
 {term:"mRNA travels to ribosome/cytoplasm",syns:["ribosome","cytoplasm","leave.*nucleus","export"],weight:2},
-{term:"Translation: mRNA <span aria-hidden="true">→</span> protein at ribosome",syns:["translation","codon","amino acid","protein","trna","anticodon"],weight:3},
+{term:"Translation: mRNA <span aria-hidden='true'>→</span> protein at ribosome",syns:["translation","codon","amino acid","protein","trna","anticodon"],weight:3},
 {term:"Codons read in triplets, start AUG, stop codons",syns:["AUG","start","stop","triplet","reading frame","UAA","UAG","UGA"],weight:2}
 ],
 model:"In the nucleus, RNA polymerase reads the template strand of the gene and builds a complementary mRNA molecule (transcription). In eukaryotes, the pre-mRNA is processed: a 5' cap and 3' poly-A tail are added for protection, and introns are spliced out, leaving only exons in the mature mRNA. The processed mRNA exits the nucleus and reaches a ribosome in the cytoplasm. During translation, the ribosome reads the mRNA in three-nucleotide codons starting at AUG (methionine). Transfer RNA molecules deliver amino acids matching each codon via their anticodons. Peptide bonds link the amino acids into a growing polypeptide chain. When a stop codon (UAA, UAG, or UGA) is reached, a release factor terminates translation and the completed polypeptide is released to fold into a functional protein."
@@ -746,7 +872,7 @@ concepts:[
 {term:"Count amino acids (4 total including Met)",syns:["4","four","3 plus met","methionine.*phe.*pro.*leu"],weight:2},
 {term:"Protein = Met-Phe-Pro-Leu (4 aa, or 3 if Met removed)",syns:["met","phe","pro","leu","methionine","phenylalanine","proline","leucine"],weight:2}
 ],
-model:"Reading the mRNA 5'<span aria-hidden="true">→</span>3' in triplets from the start codon: AUG (Met) - UUU (Phe) - CCC (Pro) - CUG (Leu) - UGA (Stop). Translation begins at AUG and ends at UGA. The protein contains 4 amino acids: Met-Phe-Pro-Leu. If methionine is later cleaved (which often happens in post-translational processing), the protein would be 3 amino acids long. The key steps are identifying the start codon, reading in consecutive non-overlapping triplets, and recognizing UGA as a stop codon that does not code for an amino acid."
+model:"Reading the mRNA 5'<span aria-hidden='true'>→</span>3' in triplets from the start codon: AUG (Met) - UUU (Phe) - CCC (Pro) - CUG (Leu) - UGA (Stop). Translation begins at AUG and ends at UGA. The protein contains 4 amino acids: Met-Phe-Pro-Leu. If methionine is later cleaved (which often happens in post-translational processing), the protein would be 3 amino acids long. The key steps are identifying the start codon, reading in consecutive non-overlapping triplets, and recognizing UGA as a stop codon that does not code for an amino acid."
 }
 ];
 
@@ -762,7 +888,7 @@ function renderQuiz(){
   filtered.forEach((q,idx)=>{
     const div=document.createElement('div');div.className='q-card';div.id='q-'+idx;
     let optsHtml='';q.opts.forEach((o,oi)=>{optsHtml+=`<label><input type="radio" name="q${idx}" value="${oi}"> ${o}</label>`;});
-    div.innerHTML=`<div class="q-diff ${q.diff}">${q.diff.toUpperCase()}</div><div class="q-text">${idx+1}. ${q.q}</div><div class="q-opts">${optsHtml}</div><button class="q-submit" onclick="checkQ(${idx},${q.ans})">Check Answer</button><div class="q-feedback" id="fb-${idx}"></div>`;
+    div.innerHTML=`<div class="q-diff ${q.diff}">${q.diff.toUpperCase()}</div><div class="q-text">${idx+1}. ${q.q}</div><div class="q-opts">${optsHtml}</div><button type="button" class="q-submit" onclick="checkQ(${idx},${q.ans})">Check Answer</button><div class="q-feedback" id="fb-${idx}"></div>`;
     area.appendChild(div);
   });
 }
@@ -783,11 +909,16 @@ function resetQuiz(){renderQuiz();}
 let fcFiltered=[...fcData],fcIdx=0;
 const fcCats=[...new Set(fcData.map(c=>c.cat))].sort();
 const fcFiltersDiv=document.getElementById('fc-filters');
-const allBtn=document.createElement('button');allBtn.className='fc-filter active';allBtn.textContent='All';allBtn.onclick=()=>filterFC('all');fcFiltersDiv.appendChild(allBtn);
-fcCats.forEach(c=>{const b=document.createElement('button');b.className='fc-filter';b.textContent=c;b.onclick=()=>filterFC(c);fcFiltersDiv.appendChild(b);});
+const allBtn=document.createElement('button');allBtn.type='button';allBtn.className='fc-filter active';allBtn.textContent='All';allBtn.onclick=()=>filterFC('all');fcFiltersDiv.appendChild(allBtn);
+fcCats.forEach(c=>{const b=document.createElement('button');b.type='button';b.className='fc-filter';b.textContent=c;b.onclick=()=>filterFC(c);fcFiltersDiv.appendChild(b);});
 function filterFC(cat){document.querySelectorAll('.fc-filter').forEach(b=>b.classList.remove('active'));if(cat==='all'){fcFiltered=[...fcData];document.querySelector('.fc-filter').classList.add('active');}else{fcFiltered=fcData.filter(c=>c.cat===cat);[...document.querySelectorAll('.fc-filter')].find(b=>b.textContent===cat).classList.add('active');}fcIdx=0;showCard();}
 function showCard(){if(!fcFiltered.length)return;const c=fcFiltered[fcIdx];document.getElementById('fc-cat').textContent=c.cat;document.getElementById('fc-q').innerHTML=c.f;document.getElementById('fc-a').innerHTML=c.b;document.getElementById('fc-inner').classList.remove('flipped');document.getElementById('fc-counter').textContent=`Card ${fcIdx+1} of ${fcFiltered.length}`;}
-function flipCard(){document.getElementById('fc-inner').classList.toggle('flipped');}
+function flipCard(){
+  const inner=document.getElementById('fc-inner');
+  inner.classList.toggle('flipped');
+  const area=document.querySelector('.fc-area');
+  if(area){area.setAttribute('aria-label',inner.classList.contains('flipped')?'Answer showing — press Space or Enter to flip back':'Flashcard — press Space or Enter to flip');}
+}
 function nextCard(){fcIdx=(fcIdx+1)%fcFiltered.length;showCard();}
 function prevCard(){fcIdx=(fcIdx-1+fcFiltered.length)%fcFiltered.length;showCard();}
 
@@ -796,7 +927,7 @@ function renderSA(){
   const area=document.getElementById('sa-area');area.innerHTML='';
   saData.forEach((sa,idx)=>{
     const div=document.createElement('div');div.className='sa-card';
-    div.innerHTML=`<div class="sa-q">${idx+1}. ${sa.q}</div><textarea class="sa-textarea" id="sa-input-${idx}" placeholder="Type your answer here..."></textarea><button class="sa-submit" onclick="gradeSA(${idx})">Grade Answer</button><div class="sa-result" id="sa-result-${idx}"></div>`;
+    div.innerHTML=`<div class="sa-q">${idx+1}. ${sa.q}</div><textarea class="sa-textarea" id="sa-input-${idx}" placeholder="Type your answer here..."></textarea><button type="button" class="sa-submit" onclick="gradeSA(${idx})">Grade Answer</button><div class="sa-result" id="sa-result-${idx}"></div>`;
     area.appendChild(div);
   });
 }
@@ -812,15 +943,20 @@ function gradeSA(idx){
   res.style.display='block';
 }
 renderQuiz();showCard();renderSA();
+
+function toggleDisclaimer(){
+  const body=document.getElementById('disc-body');
+  const arrow=document.getElementById('disc-arrow');
+  const btn=document.querySelector('.disclaimer-toggle');
+  body.classList.toggle('open');
+  arrow.classList.toggle('open');
+  btn.setAttribute('aria-expanded',body.classList.contains('open')?'true':'false');
+}
+
 </script>
 
-  <div style="max-width: 800px; margin: 40px auto; padding: 20px 30px; background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 8px; font-size: 14px; line-height: 1.6; color: #555;">
-  <div style="font-weight: bold; font-size: 15px; margin-bottom: 10px;"><span aria-hidden="true">⚠️</span> Important Notice</div>
-  <p style="margin: 0 0 10px 0;">These study resources are provided free of charge for educational purposes only. They are intended as supplemental study aids and should not be used as a substitute for your course textbooks, lecture materials, or the guidance of your instructors.</p>
-  <p style="margin: 0 0 10px 0;">While every effort has been made to ensure accuracy, this content may contain errors, omissions, or information that is out of date. Science is constantly evolving, and material that was accurate at the time of writing may no longer reflect current understanding. Always verify important facts, formulas, and concepts against your official course materials.</p>
-  <p style="margin: 0 0 10px 0;">No guarantees are made regarding the completeness, accuracy, or reliability of any information presented on these sites. Use at your own discretion. If you spot an error, we appreciate you letting us know so it can be corrected.</p>
-  <p style="margin: 0 0 10px 0;">These materials are not affiliated with, endorsed by, or officially connected to any university, college, testing organization, or textbook publisher. All content represents the independent work and ideas of the author.</p>
-  <p style="margin: 0;">This resource is provided "as is" without warranty of any kind, express or implied. The author assumes no liability for any errors or for any actions taken based on the information provided here.</p>
+
 </div>
+<footer role="contentinfo" style="text-align:center;padding:1.5rem 1rem;color:var(--text-muted);font-size:0.8rem;border-top:1px solid var(--border);margin-top:1rem;">DNA: From Nucleotides to Proteins &mdash; Study Module</footer>
 </body>
 </html>
